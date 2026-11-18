@@ -76,146 +76,128 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased">
 
-  <!-- HEADER CỐ ĐỊNH (STICKY NAVIGATION & STATS) -->
-  <header class="sticky top-0 z-30 bg-brand-950 text-white shadow-lg border-b border-blue-900/90">
-    <div class="max-w-4xl mx-auto px-3.5 sm:px-5 pt-3 pb-3">
-      <!-- Hàng 1: Tiêu đề & Thống kê kết quả -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-900/90 text-amber-300 border border-blue-700/80">
-              ⚖️ Pháp luật Đại cương
-            </span>
-            <span id="header-subtitle" class="text-xs text-blue-200 font-medium">
-              Giáo trình Trang 58 – 70
-            </span>
-          </div>
-          <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white mt-1 leading-snug">
+  <!-- HEADER THU GỌN (CUỘN TỰ NHIÊN THEO TRANG, KHÔNG CHE KHUẤT CÂU HỎI) -->
+  <header class="relative bg-brand-950 text-white shadow-md border-b border-blue-900/90">
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 py-2 space-y-1.5">
+      <!-- Hàng 1: Tiêu đề & Thống kê kết quả gọn trên 1 dòng -->
+      <div class="flex flex-wrap items-center justify-between gap-1.5">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-blue-900 text-amber-300 border border-blue-700/80 shrink-0">
+            ⚖️ PLĐC
+          </span>
+          <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white truncate">
             Trắc nghiệm Ôn thi Chương 3 &amp; Chương 4
           </h1>
+          <span id="header-subtitle" class="hidden md:inline text-[11px] text-blue-200 font-medium truncate">
+            • Chương 3 (Tr.58–70)
+          </span>
         </div>
 
-        <!-- Bảng thống kê tiến độ -->
-        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-semibold shrink-0">
-          <div class="px-2.5 py-1.5 rounded-xl bg-blue-900/70 border border-blue-800 flex items-center gap-1.5">
-            <span class="text-blue-200 font-medium">Đã làm:</span>
-            <span id="stat-answered" class="font-bold text-white">0/28</span>
-          </div>
-          <div class="px-2.5 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-600/60 flex items-center gap-1 text-emerald-300" title="Số câu trả lời đúng">
-            <span>✓ Đúng:</span>
-            <span id="stat-correct" class="font-extrabold">0</span>
-          </div>
-          <div class="px-2.5 py-1.5 rounded-xl bg-rose-950/90 border border-rose-600/60 flex items-center gap-1 text-rose-300" title="Số câu trả lời sai">
-            <span>✗ Sai:</span>
-            <span id="stat-wrong" class="font-extrabold">0</span>
-          </div>
-          <div class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center gap-1 text-amber-300" title="Tỷ lệ hoàn thành">
-            <span class="text-amber-200 font-medium">Tiến độ:</span>
-            <span id="stat-progress" class="font-extrabold">0%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Thanh tiến độ trực quan -->
-      <div class="mt-2.5">
-        <div class="w-full h-1.5 bg-blue-900/90 rounded-full overflow-hidden">
-          <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-300 rounded-full transition-all duration-300" style="width: 0%"></div>
+        <!-- Bảng thống kê tiến độ thu gọn -->
+        <div class="flex items-center gap-1.5 text-[11px] font-semibold shrink-0">
+          <span class="px-2 py-0.5 rounded-md bg-blue-900/80 border border-blue-800 text-blue-100">
+            Đã làm: <strong id="stat-answered" class="text-white">0/28</strong>
+          </span>
+          <span class="px-2 py-0.5 rounded-md bg-emerald-950/90 border border-emerald-600/60 text-emerald-300" title="Số câu đúng">
+            ✓ <strong id="stat-correct">0</strong>
+          </span>
+          <span class="px-2 py-0.5 rounded-md bg-rose-950/90 border border-rose-600/60 text-rose-300" title="Số câu sai">
+            ✗ <strong id="stat-wrong">0</strong>
+          </span>
+          <span class="px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-400/50 text-amber-300" title="Tỷ lệ hoàn thành">
+            <strong id="stat-progress">0%</strong>
+          </span>
         </div>
       </div>
 
-      <!-- Hàng 2: 3 TAB CHỌN CHƯƠNG -->
-      <nav aria-label="Chọn phần ôn tập" class="mt-3 grid grid-cols-3 gap-1.5 bg-blue-900/60 p-1 rounded-xl border border-blue-800/80">
+      <!-- Thanh tiến độ mảnh -->
+      <div class="w-full h-1 bg-blue-900/90 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-300 rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+
+      <!-- Hàng 2: 3 TAB CHỌN CHƯƠNG GỌN 1 DÒNG -->
+      <nav aria-label="Chọn phần ôn tập" class="grid grid-cols-3 gap-1 bg-blue-900/60 p-0.5 rounded-lg border border-blue-800/80">
         <button
           id="tab-ch3"
           type="button"
           onclick="switchTab('ch3')"
-          class="px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight bg-white text-brand-950 shadow-sm"
+          class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center bg-white text-brand-950 shadow-xs truncate"
         >
-          <span class="block">Chương 3</span>
-          <span class="block text-[10px] sm:text-[11px] font-medium opacity-80">Hiến pháp (28 câu)</span>
+          Chương 3 <span class="font-medium opacity-80">(28 câu)</span>
         </button>
 
         <button
           id="tab-ch4"
           type="button"
           onclick="switchTab('ch4')"
-          class="px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight text-blue-200 hover:text-white hover:bg-blue-800/50"
+          class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center text-blue-200 hover:text-white hover:bg-blue-800/50 truncate"
         >
-          <span class="block">Chương 4</span>
-          <span class="block text-[10px] sm:text-[11px] font-medium opacity-80">Hành chính (25 câu)</span>
+          Chương 4 <span class="font-medium opacity-80">(25 câu)</span>
         </button>
 
         <button
           id="tab-mix"
           type="button"
           onclick="switchTab('mix')"
-          class="px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight text-blue-200 hover:text-white hover:bg-blue-800/50"
+          class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center text-blue-200 hover:text-white hover:bg-blue-800/50 truncate"
         >
-          <span class="block">Thi thử tổng hợp</span>
-          <span class="block text-[10px] sm:text-[11px] font-medium opacity-80">Chương 3 &amp; 4 (53 câu)</span>
+          Thi thử tổng hợp <span class="font-medium opacity-80">(53 câu)</span>
         </button>
       </nav>
 
       <!-- Hàng 3: Công cụ Đảo câu hỏi, Trộn đáp án, Giải thích & Làm lại -->
-      <div class="mt-2.5 pt-2.5 border-t border-blue-900/90 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex flex-wrap items-center gap-2">
-          <!-- Nút Đảo thứ tự câu hỏi -->
+      <div class="flex flex-wrap items-center justify-between gap-1.5">
+        <div class="flex flex-wrap items-center gap-1.5">
           <button
             type="button"
             onclick="manualShuffleQuestions()"
-            class="px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-xs"
+            class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-blue-600 hover:bg-blue-500 text-white active:scale-[0.98] transition-all flex items-center gap-1"
             title="Xáo trộn ngẫu nhiên thứ tự các câu hỏi hiện tại"
           >
-            <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            Đảo thứ tự câu hỏi
+            <span>🔀</span> Đảo thứ tự câu hỏi
           </button>
 
-          <!-- Checkbox Trộn cả thứ tự đáp án A, B, C, D -->
-          <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-blue-900/70 border border-blue-800 text-xs font-medium text-blue-100 cursor-pointer hover:bg-blue-800/80 transition-colors select-none">
+          <label class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-900/70 border border-blue-800 text-[11px] font-medium text-blue-100 cursor-pointer hover:bg-blue-800/80 transition-colors select-none">
             <input
               id="chk-shuffle-options"
               type="checkbox"
               checked
               onchange="toggleShuffleOptions(this.checked)"
-              class="w-3.5 h-3.5 rounded accent-amber-400 cursor-pointer"
+              class="w-3 h-3 rounded accent-amber-400 cursor-pointer"
             />
-            <span>Trộn cả thứ tự đáp án A, B, C, D</span>
+            <span>Trộn đáp án A/B/C/D</span>
           </label>
         </div>
 
-        <div class="flex flex-wrap items-center gap-1.5">
-          <!-- Nút Hiện tất cả giải thích / Ẩn giải thích -->
+        <div class="flex items-center gap-1.5">
           <button
             id="btn-toggle-all-explain"
             type="button"
             onclick="toggleAllExplanations()"
-            class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs"
+            class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all flex items-center gap-1"
           >
             <span>📖</span>
             <span id="label-toggle-all-explain">Hiện tất cả giải thích</span>
           </button>
 
-          <!-- Nút Làm lại từ đầu -->
           <button
             type="button"
             onclick="openResetModal()"
-            class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/20 text-rose-200 hover:bg-rose-600 hover:text-white border border-rose-400/40 transition-colors flex items-center gap-1"
+            class="px-2 py-1 rounded-lg text-[11px] font-semibold bg-rose-500/20 text-rose-200 hover:bg-rose-600 hover:text-white border border-rose-400/40 transition-colors"
           >
-            <span>↺ Làm lại từ đầu</span>
+            ↺ Làm lại từ đầu
           </button>
         </div>
       </div>
 
       <!-- Hàng 4: Bộ lọc trạng thái & Chế độ xem -->
-      <div class="mt-2 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-0.5">
-        <div class="flex items-center gap-1.5">
+      <div class="flex items-center justify-between gap-1.5 overflow-x-auto no-scrollbar">
+        <div class="flex items-center gap-1">
           <button
             id="filter-all"
             type="button"
             onclick="setFilter('all')"
-            class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-brand-950 shadow-xs whitespace-nowrap transition-colors"
+            class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-brand-950 whitespace-nowrap transition-colors"
           >
             Tất cả (<span id="count-all">28</span>)
           </button>
@@ -223,7 +205,7 @@
             id="filter-unanswered"
             type="button"
             onclick="setFilter('unanswered')"
-            class="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
+            class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
           >
             Chưa làm (<span id="count-unanswered">28</span>)
           </button>
@@ -231,19 +213,19 @@
             id="filter-wrong"
             type="button"
             onclick="setFilter('wrong')"
-            class="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
+            class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
           >
             Câu làm sai (<span id="count-wrong">0</span>)
           </button>
         </div>
 
         <!-- Chuyển chế độ xem Danh sách / Từng câu -->
-        <div class="inline-flex rounded-lg bg-blue-900/80 p-0.5 border border-blue-800 shrink-0">
+        <div class="inline-flex rounded-md bg-blue-900/80 p-0.5 border border-blue-800 shrink-0">
           <button
             id="btn-mode-all"
             type="button"
             onclick="setViewMode('all')"
-            class="px-2 py-1 rounded-md text-[11px] font-semibold transition-all bg-blue-600 text-white"
+            class="px-2 py-0.5 rounded text-[11px] font-semibold transition-all bg-blue-600 text-white"
           >
             Danh sách
           </button>
@@ -251,7 +233,7 @@
             id="btn-mode-single"
             type="button"
             onclick="setViewMode('single')"
-            class="px-2 py-1 rounded-md text-[11px] font-semibold transition-all text-blue-200 hover:text-white"
+            class="px-2 py-0.5 rounded text-[11px] font-semibold transition-all text-blue-200 hover:text-white"
           >
             Từng câu
           </button>
@@ -261,7 +243,7 @@
   </header>
 
   <!-- NỘI DUNG CHÍNH -->
-  <main class="flex-1 max-w-4xl w-full mx-auto px-3.5 sm:px-5 py-5 sm:py-7">
+  <main class="flex-1 max-w-4xl w-full mx-auto px-3.5 sm:px-5 py-3.5 sm:py-5">
     <!-- Bảng điều hướng nhanh (chỉ hiện ở chế độ Từng câu) -->
     <div id="single-navigator" class="hidden mb-5 bg-white rounded-2xl p-3.5 sm:p-4 shadow-xs border border-slate-200">
       <div class="flex items-center justify-between mb-2.5">
@@ -303,12 +285,37 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="max-w-4xl w-full mx-auto px-4 py-6 text-center text-xs text-slate-400">
+  <footer class="max-w-4xl w-full mx-auto px-4 pt-4 pb-16 text-center text-xs text-slate-400">
     Ôn tập Pháp luật Đại cương • Chương 3: Hiến pháp 2013 (Tr.58–70) &amp; Chương 4: Luật Hành chính &amp; TTHC (Tr.74–98)
   </footer>
 
+  <!-- THANH TRẠNG THÁI NỔI SIÊU NHỎ GỌN (FLOATING MINI-BAR GÓC DƯỚI PHẢI) -->
+  <div id="floating-mini-bar" class="fixed bottom-3 right-3 z-40 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-full bg-brand-950/95 text-white text-[11px] sm:text-xs font-semibold shadow-xl border border-blue-700/80 backdrop-blur-xs">
+    <span class="text-emerald-300">Đúng: <strong id="mini-correct">0</strong></span>
+    <span class="text-blue-700">|</span>
+    <span class="text-rose-300">Sai: <strong id="mini-wrong">0</strong></span>
+    <span class="text-blue-700">|</span>
+    <span class="text-amber-300">Tiến độ: <strong id="mini-progress">0%</strong></span>
+    <button
+      type="button"
+      onclick="manualShuffleQuestions()"
+      class="ml-0.5 px-2 py-0.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold transition-colors flex items-center gap-1 cursor-pointer"
+      title="Đảo thứ tự câu hỏi"
+    >
+      🔀 Đảo câu
+    </button>
+    <button
+      type="button"
+      onclick="scrollToTopSmooth()"
+      class="px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600/80 text-[11px] font-bold transition-colors cursor-pointer"
+      title="Cuộn lên đầu trang"
+    >
+      ↑ Đầu trang
+    </button>
+  </div>
+
   <!-- TOAST THÔNG BÁO KHI ĐẢO THỨ TỰ CÂU HỎI -->
-  <div id="toast-container" class="fixed bottom-6 left-1/2 z-50 pointer-events-none"></div>
+  <div id="toast-container" class="fixed bottom-14 left-1/2 z-50 pointer-events-none"></div>
 
   <!-- MODAL XÁC NHẬN LÀM LẠI TỪ ĐẦU (Thay thế confirm()) -->
   <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
@@ -1310,6 +1317,10 @@
       renderApp();
     }
 
+    function scrollToTopSmooth() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     // Hộp thoại xác nhận làm lại từ đầu (thay thế confirm())
     function openResetModal() {
       const modal = document.getElementById('reset-modal');
@@ -1384,6 +1395,11 @@
       document.getElementById('stat-progress').textContent = `${progressPercent}%`;
       document.getElementById('progress-bar').style.width = `${progressPercent}%`;
 
+      // Cập nhật thanh trạng thái nổi góc dưới bên phải
+      document.getElementById('mini-correct').textContent = correctCount;
+      document.getElementById('mini-wrong').textContent = wrongCount;
+      document.getElementById('mini-progress').textContent = `${progressPercent}%`;
+
       document.getElementById('count-all').textContent = total;
       document.getElementById('count-unanswered').textContent = unansweredCount;
       document.getElementById('count-wrong').textContent = wrongCount;
@@ -1391,20 +1407,20 @@
       // Phụ đề trang sách theo Tab
       const subtitleEl = document.getElementById('header-subtitle');
       if (state.activeTab === 'ch3') {
-        subtitleEl.textContent = 'Chương 3: Hiến pháp năm 2013 • Giáo trình Trang 58 – 70';
+        subtitleEl.textContent = '• Chương 3 (Tr.58–70)';
       } else if (state.activeTab === 'ch4') {
-        subtitleEl.textContent = 'Chương 4: Luật Hành chính & TTHC • Giáo trình Trang 74 – 98';
+        subtitleEl.textContent = '• Chương 4 (Tr.74–98)';
       } else {
-        subtitleEl.textContent = 'Thi thử tổng hợp Chương 3 & Chương 4 • Giáo trình Trang 58 – 98';
+        subtitleEl.textContent = '• Tổng hợp (Tr.58–98)';
       }
 
-      // Cập nhật giao diện 3 Tab
+      // Cập nhật giao diện 3 Tab gọn 1 dòng
       ['ch3', 'ch4', 'mix'].forEach((t) => {
         const tabBtn = document.getElementById(`tab-${t}`);
         if (state.activeTab === t) {
-          tabBtn.className = 'px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight bg-white text-brand-950 shadow-sm';
+          tabBtn.className = 'px-2 py-1 rounded-md text-xs font-bold transition-all text-center bg-white text-brand-950 shadow-xs truncate';
         } else {
-          tabBtn.className = 'px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight text-blue-200 hover:text-white hover:bg-blue-800/50';
+          tabBtn.className = 'px-2 py-1 rounded-md text-xs font-bold transition-all text-center text-blue-200 hover:text-white hover:bg-blue-800/50 truncate';
         }
       });
 
@@ -1413,19 +1429,19 @@
       const toggleLabel = document.getElementById('label-toggle-all-explain');
       if (state.showAllExplanations) {
         toggleLabel.textContent = 'Ẩn giải thích';
-        toggleBtn.className = 'px-2.5 py-1.5 rounded-xl text-xs font-bold bg-white text-brand-950 hover:bg-blue-50 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs';
+        toggleBtn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white text-brand-950 hover:bg-blue-50 active:scale-[0.98] transition-all flex items-center gap-1';
       } else {
         toggleLabel.textContent = 'Hiện tất cả giải thích';
-        toggleBtn.className = 'px-2.5 py-1.5 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs';
+        toggleBtn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all flex items-center gap-1';
       }
 
       // Cập nhật 3 nút lọc trạng thái
       ['all', 'unanswered', 'wrong'].forEach((f) => {
         const fBtn = document.getElementById(`filter-${f}`);
         if (state.filter === f) {
-          fBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-brand-950 shadow-xs whitespace-nowrap transition-colors';
+          fBtn.className = 'px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-brand-950 whitespace-nowrap transition-colors';
         } else {
-          fBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors';
+          fBtn.className = 'px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors';
         }
       });
 
@@ -1433,11 +1449,11 @@
       const btnAll = document.getElementById('btn-mode-all');
       const btnSingle = document.getElementById('btn-mode-single');
       if (state.viewMode === 'all') {
-        btnAll.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all bg-blue-600 text-white';
-        btnSingle.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all text-blue-200 hover:text-white';
+        btnAll.className = 'px-2 py-0.5 rounded text-[11px] font-semibold transition-all bg-blue-600 text-white';
+        btnSingle.className = 'px-2 py-0.5 rounded text-[11px] font-semibold transition-all text-blue-200 hover:text-white';
       } else {
-        btnSingle.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all bg-blue-600 text-white';
-        btnAll.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all text-blue-200 hover:text-white';
+        btnSingle.className = 'px-2 py-0.5 rounded text-[11px] font-semibold transition-all bg-blue-600 text-white';
+        btnAll.className = 'px-2 py-0.5 rounded text-[11px] font-semibold transition-all text-blue-200 hover:text-white';
       }
     }
 
