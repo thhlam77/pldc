@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trắc nghiệm Ôn thi Pháp luật Đại cương – Chương 3 &amp; Chương 4</title>
+  <title>Trắc nghiệm Ôn thi Pháp luật Đại cương – Chương 1, Chương 3 &amp; Chương 4</title>
   <!-- Tải Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Tải font Inter hỗ trợ tiếng Việt sắc nét -->
@@ -86,17 +86,17 @@
             ⚖️ PLĐC
           </span>
           <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white truncate">
-            Trắc nghiệm Ôn thi Chương 3 &amp; Chương 4
+            Trắc nghiệm Ôn thi Chương 1, 3 &amp; 4
           </h1>
           <span id="header-subtitle" class="hidden md:inline text-[11px] text-blue-200 font-medium truncate">
-            • Chương 3 (Tr.58–70)
+            • Chương 1: Nhà nước (Tr.11–31)
           </span>
         </div>
 
         <!-- Bảng thống kê tiến độ thu gọn -->
         <div class="flex items-center gap-1.5 text-[11px] font-semibold shrink-0">
           <span class="px-2 py-0.5 rounded-md bg-blue-900/80 border border-blue-800 text-blue-100">
-            Đã làm: <strong id="stat-answered" class="text-white">0/28</strong>
+            Đã làm: <strong id="stat-answered" class="text-white">0/30</strong>
           </span>
           <span class="px-2 py-0.5 rounded-md bg-emerald-950/90 border border-emerald-600/60 text-emerald-300" title="Số câu đúng">
             ✓ <strong id="stat-correct">0</strong>
@@ -115,15 +115,24 @@
         <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-300 rounded-full transition-all duration-300" style="width: 0%"></div>
       </div>
 
-      <!-- Hàng 2: 3 TAB CHỌN CHƯƠNG GỌN 1 DÒNG -->
-      <nav aria-label="Chọn phần ôn tập" class="grid grid-cols-3 gap-1 bg-blue-900/60 p-0.5 rounded-lg border border-blue-800/80">
+      <!-- Hàng 2: 4 TAB CHỌN CHƯƠNG GỌN -->
+      <nav aria-label="Chọn phần ôn tập" class="grid grid-cols-2 sm:grid-cols-4 gap-1 bg-blue-900/60 p-0.5 rounded-lg border border-blue-800/80">
+        <button
+          id="tab-ch1"
+          type="button"
+          onclick="switchTab('ch1')"
+          class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center bg-white text-brand-950 shadow-xs truncate"
+        >
+          <span class="hidden sm:inline">Chương 1: Nhà nước</span><span class="sm:hidden">Ch.1: Nhà nước</span> <span class="font-medium opacity-80">(30 câu)</span>
+        </button>
+
         <button
           id="tab-ch3"
           type="button"
           onclick="switchTab('ch3')"
-          class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center bg-white text-brand-950 shadow-xs truncate"
+          class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center text-blue-200 hover:text-white hover:bg-blue-800/50 truncate"
         >
-          Chương 3 <span class="font-medium opacity-80">(28 câu)</span>
+          <span class="hidden sm:inline">Chương 3: Hiến pháp</span><span class="sm:hidden">Ch.3: Hiến pháp</span> <span class="font-medium opacity-80">(28 câu)</span>
         </button>
 
         <button
@@ -132,7 +141,7 @@
           onclick="switchTab('ch4')"
           class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center text-blue-200 hover:text-white hover:bg-blue-800/50 truncate"
         >
-          Chương 4 <span class="font-medium opacity-80">(25 câu)</span>
+          <span class="hidden sm:inline">Chương 4: Hành chính &amp; TTHC</span><span class="sm:hidden">Ch.4: Hành chính</span> <span class="font-medium opacity-80">(25 câu)</span>
         </button>
 
         <button
@@ -141,7 +150,7 @@
           onclick="switchTab('mix')"
           class="px-2 py-1 rounded-md text-xs font-bold transition-all text-center text-blue-200 hover:text-white hover:bg-blue-800/50 truncate"
         >
-          Thi thử tổng hợp <span class="font-medium opacity-80">(53 câu)</span>
+          <span class="hidden sm:inline">Thi thử tổng hợp</span><span class="sm:hidden">Tổng hợp</span> <span class="font-medium opacity-80">(83 câu)</span>
         </button>
       </nav>
 
@@ -199,7 +208,7 @@
             onclick="setFilter('all')"
             class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-brand-950 whitespace-nowrap transition-colors"
           >
-            Tất cả (<span id="count-all">28</span>)
+            Tất cả (<span id="count-all">30</span>)
           </button>
           <button
             id="filter-unanswered"
@@ -207,7 +216,7 @@
             onclick="setFilter('unanswered')"
             class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
           >
-            Chưa làm (<span id="count-unanswered">28</span>)
+            Chưa làm (<span id="count-unanswered">30</span>)
           </button>
           <button
             id="filter-wrong"
@@ -218,6 +227,10 @@
             Câu làm sai (<span id="count-wrong">0</span>)
           </button>
         </div>
+
+        <span class="hidden lg:inline text-[10px] text-blue-200/80 italic truncate">
+          Tài liệu ôn tập nội bộ cá nhân – Không sử dụng cho mục đích thương mại
+        </span>
 
         <!-- Chuyển chế độ xem Danh sách / Từng câu -->
         <div class="inline-flex rounded-md bg-blue-900/80 p-0.5 border border-blue-800 shrink-0">
@@ -285,8 +298,13 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="max-w-4xl w-full mx-auto px-4 pt-4 pb-16 text-center text-xs text-slate-400">
-    Ôn tập Pháp luật Đại cương • Chương 3: Hiến pháp 2013 (Tr.58–70) &amp; Chương 4: Luật Hành chính &amp; TTHC (Tr.74–98)
+  <footer class="max-w-4xl w-full mx-auto px-4 pt-4 pb-16 text-center text-xs text-slate-500 space-y-1">
+    <p class="font-medium text-slate-600">
+      Ôn tập Pháp luật Đại cương • Chương 1: Nhà nước (Tr.11–31) • Chương 3: Hiến pháp 2013 (Tr.58–70) • Chương 4: Luật Hành chính &amp; TTHC (Tr.74–98)
+    </p>
+    <p class="text-[11px] text-slate-400 italic">
+      Tài liệu ôn tập nội bộ cá nhân – Không sử dụng cho mục đích thương mại.
+    </p>
   </footer>
 
   <!-- THANH TRẠNG THÁI NỔI SIÊU NHỎ GỌN (FLOATING MINI-BAR GÓC DƯỚI PHẢI) -->
@@ -352,9 +370,461 @@
 
   <script>
     // =========================================================================
-    // DỮ LIỆU GỐC: 28 CÂU CHƯƠNG 3 (TRANG 58–70) & 25 CÂU CHƯƠNG 4 (TRANG 74–98)
+    // DỮ LIỆU GỐC: 30 CÂU CHƯƠNG 1 (TRANG 11–31), 28 CÂU CHƯƠNG 3 (TRANG 58–70) & 25 CÂU CHƯƠNG 4 (TRANG 74–98)
     // =========================================================================
     const MASTER_QUESTIONS = [
+      // -------------------- CHƯƠNG 1: 30 CÂU --------------------
+      {
+        uid: "ch1_1",
+        chapter: 1,
+        origNum: 1,
+        question: "Theo các học thuyết phi Mác-xít về nguồn gốc nhà nước, thuyết nào cho rằng nhà nước là kết quả phát triển tự nhiên của gia đình và quyền lực của người đứng đầu gia đình?",
+        options: [
+          "Thuyết thần học.",
+          "Thuyết gia trưởng.",
+          "Thuyết khế ước xã hội.",
+          "Thuyết tâm lý."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.1 • Trang 11",
+        explanation: "<strong>Thuyết gia trưởng</strong> quan niệm nhà nước là kết quả phát triển của <strong>gia đình và quyền gia trưởng</strong>, là hình thức tổ chức tự nhiên của cuộc sống con người; quyền lực nhà nước về bản chất giống quyền lực gia trưởng của người đứng đầu gia đình."
+      },
+      {
+        uid: "ch1_2",
+        chapter: 1,
+        origNum: 2,
+        question: "Đại biểu của học thuyết khế ước xã hội (Hobbes, Locke, Montesquieu, Rousseau) khẳng định chủ quyền nhà nước thuộc về chủ thể nào?",
+        options: [
+          "Thượng đế và các đấng siêu nhiên.",
+          "Thị tộc chiến thắng bằng bạo lực.",
+          "Nhân dân thông qua hợp đồng xã hội.",
+          "Tầng lớp thủ lĩnh và giáo sĩ."
+        ],
+        correctIndex: 2,
+        ref: "Chương 1 • Mục 1.1.1 • Trang 11",
+        explanation: "<strong>Thuyết khế ước xã hội</strong> cho rằng nhà nước là kết quả của một <strong>khế ước (hợp đồng)</strong> được ký kết giữa những con người sống trong trạng thái tự nhiên không có nhà nước, do đó <strong>chủ quyền nhà nước thuộc về nhân dân</strong>."
+      },
+      {
+        uid: "ch1_3",
+        chapter: 1,
+        origNum: 3,
+        question: "Học thuyết nào cho rằng nhà nước xuất hiện trực tiếp từ việc thị tộc chiến thắng \"nghĩ ra\" một hệ thống cơ quan đặc biệt để nô dịch kẻ chiến bại?",
+        options: [
+          "Thuyết bạo lực.",
+          "Thuyết thần học.",
+          "Thuyết tâm lý.",
+          "Thuyết gia trưởng."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Mục 1.1.1 • Trang 11–12",
+        explanation: "<strong>Thuyết bạo lực</strong> (đại biểu: Hume, Gumplowicz, Duhring) cho rằng nhà nước xuất hiện trực tiếp từ việc <strong>sử dụng bạo lực của thị tộc này đối với thị tộc khác</strong>, thị tộc chiến thắng lập ra nhà nước để nô dịch kẻ chiến bại."
+      },
+      {
+        uid: "ch1_4",
+        chapter: 1,
+        origNum: 4,
+        question: "Theo quan điểm của chủ nghĩa Mác - Lênin, hai nguyên nhân trực tiếp dẫn đến sự ra đời của nhà nước từ sự tan rã của chế độ cộng sản nguyên thủy là gì?",
+        options: [
+          "Nguyên nhân kinh tế là chế độ tư hữu và nguyên nhân xã hội là sự phân chia giai cấp.",
+          "Nguyên nhân tự nhiên là thiên tai lũ lụt và nguyên nhân tôn giáo là nhu cầu tín ngưỡng.",
+          "Nguyên nhân pháp lý là sự ra đời của Hiến pháp và nguyên nhân chính trị là bầu cử.",
+          "Nguyên nhân đối ngoại là chiến tranh bộ lạc và nguyên nhân tâm lý là sự phụ thuộc thủ lĩnh."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Mục 1.1.1 • Trang 12",
+        explanation: "Theo chủ nghĩa Mác - Lênin, nhà nước chỉ xuất hiện khi có <strong>nguyên nhân kinh tế là chế độ tư hữu</strong> và <strong>nguyên nhân xã hội là sự phân chia giai cấp</strong>, là sản phẩm tất yếu của những đối kháng giai cấp không thể điều hòa được."
+      },
+      {
+        uid: "ch1_5",
+        chapter: 1,
+        origNum: 5,
+        question: "Ba lần phân công lao động xã hội lớn vào cuối thời kỳ công xã nguyên thủy diễn ra theo trình tự nào?",
+        options: [
+          "(1) Thủ công nghiệp tách khỏi nông nghiệp; (2) Thương nghiệp xuất hiện; (3) Chăn nuôi tách khỏi trồng trọt.",
+          "(1) Chăn nuôi tách khỏi trồng trọt; (2) Thủ công nghiệp tách khỏi nông nghiệp; (3) Buôn bán phát triển và thương nghiệp xuất hiện.",
+          "(1) Thương nghiệp xuất hiện; (2) Chăn nuôi tách khỏi trồng trọt; (3) Thủ công nghiệp tách khỏi nông nghiệp.",
+          "(1) Nông nghiệp tách khỏi công nghiệp; (2) Thương nghiệp xuất hiện; (3) Dịch vụ tách khỏi thương nghiệp."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.1 • Trang 12",
+        explanation: "Lịch sử xã hội cộng sản nguyên thủy vào thời kỳ cuối trải qua ba lần phân công lao động lớn: <strong>(i) nghề chăn nuôi phát triển mạnh tách khỏi trồng trọt</strong>, <strong>(ii) thủ công nghiệp tách khỏi nông nghiệp</strong>, <strong>(iii) buôn bán phát triển và thương nghiệp xuất hiện</strong>."
+      },
+      {
+        uid: "ch1_6",
+        chapter: 1,
+        origNum: 6,
+        question: "Bên cạnh mâu thuẫn giai cấp, sự hình thành nhà nước ở một số quốc gia phương Đông cổ đại còn xuất phát chủ yếu từ nhu cầu bức thiết nào?",
+        options: [
+          "Mở rộng giao thương hàng hải và thuộc địa hóa.",
+          "Khai khẩn đất đai, trị thủy và chống giặc ngoại xâm.",
+          "Ký kết khế ước xã hội giữa các tầng lớp quý tộc.",
+          "Phát triển công nghiệp cơ khí và đô thị hóa."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.1 • Trang 13",
+        explanation: "Ở một số nhà nước phương Đông, con đường hình thành nhà nước không chỉ do đấu tranh giai cấp mà xuất phát từ các nhu cầu bức thiết là <strong>khai khẩn đất đai, trị thủy và chống giặc ngoại xâm</strong>."
+      },
+      {
+        uid: "ch1_7",
+        chapter: 1,
+        origNum: 7,
+        question: "Theo quan điểm của chủ nghĩa Mác - Lênin, bản chất của nhà nước bao gồm hai thuộc tính cơ bản nào?",
+        options: [
+          "Tính vĩnh cửu và tính siêu nhiên.",
+          "Tính giai cấp và tính xã hội.",
+          "Tính tự nguyện và tính bình đẳng.",
+          "Tính huyết thống và tính tôn giáo."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.2 • Trang 14",
+        explanation: "Bản chất của nhà nước có <strong>hai bản chất cơ bản là tính giai cấp và tính xã hội</strong>; khi xã hội không còn giai cấp và đấu tranh giai cấp thì nhà nước cũng tiêu vong."
+      },
+      {
+        uid: "ch1_8",
+        chapter: 1,
+        origNum: 8,
+        question: "Hoạt động nào sau đây thể hiện rõ nét nhất \"tính xã hội\" của nhà nước?",
+        options: [
+          "Đàn áp sự phản kháng của giai cấp bị trị để bảo vệ đặc quyền của giai cấp thống trị.",
+          "Xây dựng trường học, bệnh viện, đường sá, bảo vệ môi trường và phòng chống dịch bệnh.",
+          "Tập trung toàn bộ tư liệu sản xuất vào tay một nhóm thiểu số cầm quyền.",
+          "Duy trì sự bất bình đẳng về địa vị kinh tế giữa các tầng lớp dân cư."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.2 • Trang 14",
+        explanation: "<strong>Tính xã hội</strong> thể hiện ở việc nhà nước là đại diện chính thức của toàn xã hội, giải quyết các công việc chung, bảo vệ lợi ích chung như <strong>xây dựng công trình phúc lợi, trường học, bệnh viện, công viên, đường sá, bảo vệ môi trường, phòng chống dịch bệnh...</strong>"
+      },
+      {
+        uid: "ch1_9",
+        chapter: 1,
+        origNum: 9,
+        question: "Đặc trưng đầu tiên giúp phân biệt nhà nước với các tổ chức xã hội khác là gì?",
+        options: [
+          "Nhà nước quản lý thành viên dựa trên quan hệ huyết thống và dòng tộc.",
+          "Nhà nước thiết lập quyền lực công cộng đặc biệt tách rời khỏi xã hội và áp đặt với toàn xã hội.",
+          "Nhà nước không có bộ máy cưỡng chế mà chỉ vận động bằng dư luận xã hội.",
+          "Nhà nước tự sản xuất ra toàn bộ của cải vật chất để nuôi sống bộ máy."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.3 • Trang 15",
+        explanation: "Đặc trưng thứ nhất là nhà nước thiết lập <strong>quyền lực công cộng đặc biệt tách rời khỏi xã hội và áp đặt với toàn xã hội</strong>, được duy trì thông qua bộ máy nhà nước chuyên nghiệp cùng các công cụ cưỡng chế."
+      },
+      {
+        uid: "ch1_10",
+        chapter: 1,
+        origNum: 10,
+        question: "Việc nhà nước phân chia dân cư theo các đơn vị hành chính lãnh thổ nhằm mục đích cơ bản nào?",
+        options: [
+          "Thay thế việc quản lý theo huyết thống để bảo đảm quản lý tập trung, thống nhất.",
+          "Xóa bỏ hoàn toàn sự khác biệt về văn hóa giữa các vùng miền.",
+          "Chia cắt quốc gia thành nhiều vùng tự trị độc lập về pháp luật.",
+          "Hạn chế quyền tự do đi lại của công dân giữa các địa phương."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Mục 1.1.3 • Trang 15–16",
+        explanation: "Khác với thị tộc, bộ lạc quản lý theo <strong>huyết thống</strong>, nhà nước <strong>phân chia dân cư theo các đơn vị hành chính lãnh thổ</strong> xuất phát từ nhu cầu quản lý nhanh chóng, kịp thời, bảo đảm sự quản lý <strong>tập trung, thống nhất</strong> của nhà nước."
+      },
+      {
+        uid: "ch1_11",
+        chapter: 1,
+        origNum: 11,
+        question: "Xét về mặt phạm vi, chủ quyền quốc gia được chia thành hai nội dung nào?",
+        options: [
+          "Chủ quyền lập pháp và chủ quyền tư pháp.",
+          "Chủ quyền đối nội và chủ quyền đối ngoại.",
+          "Chủ quyền kinh tế và chủ quyền văn hóa.",
+          "Chủ quyền trung ương và chủ quyền địa phương."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.3 • Trang 16",
+        explanation: "Xét về mặt phạm vi, <strong>chủ quyền quốc gia</strong> chia thành <strong>chủ quyền đối nội</strong> (thực hiện quyền lực nhà nước đối với công việc bên trong) và <strong>chủ quyền đối ngoại</strong> (thực hiện quyền lực nhà nước đối với công việc bên ngoài quốc gia)."
+      },
+      {
+        uid: "ch1_12",
+        chapter: 1,
+        origNum: 12,
+        question: "Vì sao chỉ có nhà nước mới có quyền quy định và tiến hành thu các loại thuế dưới hình thức bắt buộc?",
+        options: [
+          "Vì nhà nước là tổ chức duy nhất trực tiếp sản xuất kinh doanh tạo ra lợi nhuận.",
+          "Vì nhà nước cần duy trì quyền lực công cộng vốn tách biệt khỏi xã hội và không trực tiếp sản xuất vật chất.",
+          "Vì thuế là khoản đóng góp tự nguyện của công dân khi sử dụng dịch vụ hành chính.",
+          "Vì nhà nước phải chia đều ngân sách cho các tổ chức tôn giáo quản lý."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.3 • Trang 16–17",
+        explanation: "Đặc trưng thứ năm dựa trên cơ sở <strong>nhà nước cần duy trì quyền lực công cộng, vốn không tham gia sản xuất tạo ra của cải vật chất và tách biệt khỏi xã hội</strong> nên cần sự đóng góp tài chính bắt buộc của người dân thông qua thuế, đồng thời để tái đầu tư và phân phối cho xã hội."
+      },
+      {
+        uid: "ch1_13",
+        chapter: 1,
+        origNum: 13,
+        question: "Kiểu nhà nước nào là kiểu nhà nước đầu tiên xuất hiện trong lịch sử xã hội loài người?",
+        options: [
+          "Kiểu nhà nước phong kiến.",
+          "Kiểu nhà nước chủ nô.",
+          "Kiểu nhà nước tư sản.",
+          "Kiểu nhà nước xã hội chủ nghĩa."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.4 • Trang 17",
+        explanation: "<strong>Nhà nước chủ nô là kiểu nhà nước đầu tiên trong lịch sử</strong>, ra đời khi chế độ thị tộc - bộ lạc tan rã, tư hữu xuất hiện và mâu thuẫn giai cấp không thể điều hòa được (hai giai cấp đối kháng chính là chủ nô và nô lệ)."
+      },
+      {
+        uid: "ch1_14",
+        chapter: 1,
+        origNum: 14,
+        question: "Cơ sở tư tưởng của kiểu nhà nước phong kiến được xây dựng trên nền tảng nào?",
+        options: [
+          "Học thuyết chủ nghĩa Mác - Lênin.",
+          "Sự kết hợp của Nho giáo, Phật giáo và Thần quyền.",
+          "Thuyết đa nguyên chính trị và tự do cá nhân.",
+          "Đa thần đạo gắn với chế độ chiếm hữu nô lệ."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.4 • Trang 18",
+        explanation: "Về cơ sở tư tưởng của kiểu nhà nước phong kiến là <strong>sự kết hợp của Nho giáo, Phật giáo và Thần quyền</strong>, tạo ra hệ tư tưởng vững chắc giúp giai cấp địa chủ phong kiến duy trì quyền lực lâu dài."
+      },
+      {
+        uid: "ch1_15",
+        chapter: 1,
+        origNum: 15,
+        question: "Cơ sở kinh tế đặc trưng của kiểu nhà nước tư sản là gì?",
+        options: [
+          "Chế độ công hữu toàn dân về tư liệu sản xuất.",
+          "Quan hệ sản xuất tư bản chủ nghĩa dựa trên tư hữu tư bản về tư liệu sản xuất và bóc lột giá trị thặng dư.",
+          "Chế độ sở hữu ruộng đất phong kiến của tầng lớp địa chủ.",
+          "Chế độ sở hữu tư nhân của chủ nô đối với cả tư liệu sản xuất lẫn người lao động."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.4 • Trang 18",
+        explanation: "Kiểu nhà nước tư sản dựa trên cơ sở kinh tế là <strong>quan hệ sản xuất tư bản chủ nghĩa dựa trên chế độ tư hữu tư bản về tư liệu sản xuất và bóc lột giá trị thặng dư</strong> (giai cấp vô sản được tự do nhưng không có TLSX nên phải bán sức lao động)."
+      },
+      {
+        uid: "ch1_16",
+        chapter: 1,
+        origNum: 16,
+        question: "Theo quan điểm Mác - Lênin, cơ sở kinh tế và cơ sở xã hội của kiểu nhà nước xã hội chủ nghĩa có điểm gì khác biệt căn bản so với các kiểu nhà nước trước đó?",
+        options: [
+          "Dựa trên chế độ công hữu về tư liệu sản xuất và thực hiện dân chủ với số đông là nhân dân lao động.",
+          "Dựa trên tư hữu về ruộng đất và sự thống trị của tầng lớp quý tộc.",
+          "Dựa trên chế độ đa đảng đối lập và bóc lột giá trị thặng dư.",
+          "Dựa trên quyền lực vô hạn của người đứng đầu theo nguyên tắc thừa kế."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Mục 1.1.4 • Trang 18–19",
+        explanation: "Nhà nước XHCN là kiểu nhà nước cuối cùng trong lịch sử, dựa trên <strong>(i) chế độ công hữu về tư liệu sản xuất</strong>, <strong>(ii) thực hiện dân chủ với số đông là nhân dân lao động thông qua liên minh công - nông - trí thức</strong>, và <strong>(iii) nền tảng học thuyết Mác - Lênin</strong>."
+      },
+      {
+        uid: "ch1_17",
+        chapter: 1,
+        origNum: 17,
+        question: "Dựa trên phạm vi hoạt động, chức năng của nhà nước được phân chia thành những loại nào?",
+        options: [
+          "Chức năng lập pháp và chức năng hành pháp.",
+          "Chức năng đối nội và chức năng đối ngoại.",
+          "Chức năng kinh tế và chức năng văn hóa.",
+          "Chức năng giai cấp và chức năng xã hội."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.5 • Trang 19",
+        explanation: "Dựa trên phạm vi hoạt động, chức năng của nhà nước được chia thành <strong>chức năng đối nội</strong> (hoạt động chủ yếu trong nội bộ một nước) và <strong>chức năng đối ngoại</strong> (quan hệ với các nước và dân tộc khác)."
+      },
+      {
+        uid: "ch1_18",
+        chapter: 1,
+        origNum: 18,
+        question: "Khái niệm \"Hình thức nhà nước\" được xem xét đầy đủ dưới ba khía cạnh nào?",
+        options: [
+          "Cơ sở kinh tế, cơ sở xã hội và cơ sở tư tưởng.",
+          "Hình thức chính thể, hình thức cấu trúc và chế độ chính trị.",
+          "Chức năng đối nội, chức năng đối ngoại và bộ máy nhà nước.",
+          "Quyền lập pháp, quyền hành pháp và quyền tư pháp."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.6 • Trang 20",
+        explanation: "Hình thức nhà nước là cách thức tổ chức và phương pháp thực hiện quyền lực nhà nước, được xem xét dưới ba khía cạnh: <strong>hình thức chính thể, hình thức cấu trúc và chế độ chính trị</strong>."
+      },
+      {
+        uid: "ch1_19",
+        chapter: 1,
+        origNum: 19,
+        question: "Điểm khác biệt cốt lõi giữa hình thức chính thể quân chủ và hình thức chính thể cộng hòa là gì?",
+        options: [
+          "Chính thể quân chủ bầu người đứng đầu theo nhiệm kỳ; chính thể cộng hòa truyền ngôi theo huyết thống.",
+          "Chính thể quân chủ trao quyền lực tối cao cho người đứng đầu theo nguyên tắc thừa kế; chính thể cộng hòa trao cho cơ quan đại diện được bầu theo thời hạn nhất định.",
+          "Chính thể quân chủ luôn là nhà nước liên bang; chính thể cộng hòa luôn là nhà nước đơn nhất.",
+          "Chính thể quân chủ không có pháp luật; chính thể cộng hòa quản lý bằng Hiến pháp."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.6 • Trang 20",
+        explanation: "<strong>Chính thể quân chủ</strong> có quyền lực tối cao tập trung toàn bộ hay một phần vào người đứng đầu theo <strong>nguyên tắc thừa kế</strong> (quân chủ tuyệt đối và quân chủ hạn chế); <strong>chính thể cộng hòa</strong> có quyền lực tối cao thực hiện bởi <strong>cơ quan đại diện được bầu ra trong một thời hạn nhất định</strong> (cộng hòa dân chủ và cộng hòa quý tộc)."
+      },
+      {
+        uid: "ch1_20",
+        chapter: 1,
+        origNum: 20,
+        question: "Nhà nước liên bang có đặc điểm cấu trúc nào sau đây khác với nhà nước đơn nhất?",
+        options: [
+          "Chỉ có một hệ thống pháp luật chung duy nhất áp dụng trên toàn lãnh thổ.",
+          "Có hai hệ thống cơ quan quyền lực và hai hệ thống pháp luật áp dụng song song cho toàn liên bang và riêng từng bang.",
+          "Được chia thành các đơn vị hành chính lãnh thổ trực thuộc hoàn toàn trung ương.",
+          "Không có chủ quyền đối ngoại chung trong quan hệ quốc tế."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.6 • Trang 20–21",
+        explanation: "<strong>Nhà nước đơn nhất</strong> có các cơ quan quyền lực, quản lý, xét xử tối cao và <strong>một hệ thống pháp luật chung</strong>; trong khi <strong>nhà nước liên bang</strong> là hình thức liên hợp nhiều nhà nước, có <strong>hai hệ thống cơ quan quyền lực và hệ thống pháp luật áp dụng song song</strong> cho toàn liên bang và cho riêng từng bang."
+      },
+      {
+        uid: "ch1_21",
+        chapter: 1,
+        origNum: 21,
+        question: "Trong cơ cấu của hệ thống chính trị nói chung, thiết chế nào giữ vai trò trung tâm?",
+        options: [
+          "Các nhóm lợi ích kinh tế.",
+          "Nhà nước.",
+          "Các tổ chức tôn giáo.",
+          "Các hiệp hội nghề nghiệp."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.1.7 • Trang 21",
+        explanation: "Cơ cấu của hệ thống chính trị gồm: (i) nhà nước; (ii) các đảng phái chính trị; (iii) các nhóm lợi ích, các tổ chức chính trị, xã hội... Trong đó, <strong>nhà nước là trung tâm của hệ thống chính trị</strong>."
+      },
+      {
+        uid: "ch1_22",
+        chapter: 1,
+        origNum: 22,
+        question: "Nhận định nào sau đây KHÔNG phải là đặc điểm của bộ máy nhà nước?",
+        options: [
+          "Bộ máy nhà nước là tập hợp có hệ thống các cơ quan nhà nước từ trung ương đến địa phương.",
+          "Bộ máy nhà nước được tổ chức và hoạt động theo những nguyên tắc nhất định.",
+          "Bộ máy nhà nước là công cụ, phương tiện để thực hiện các chức năng và nhiệm vụ của nhà nước.",
+          "Bộ máy nhà nước bao gồm cả các doanh nghiệp tư nhân và tổ chức phi chính phủ."
+        ],
+        correctIndex: 3,
+        ref: "Chương 1 • Mục 1.1.8 • Trang 22",
+        explanation: "Bộ máy nhà nước có ba đặc điểm: (1) tập hợp hệ thống các cơ quan nhà nước từ trung ương đến địa phương có mối liên hệ, ràng buộc; (2) tổ chức, hoạt động theo nguyên tắc; (3) là công cụ, phương tiện thực hiện chức năng, nhiệm vụ của nhà nước (không bao gồm doanh nghiệp tư nhân hay tổ chức phi chính phủ)."
+      },
+      {
+        uid: "ch1_23",
+        chapter: 1,
+        origNum: 23,
+        question: "Theo Khoản 2 Điều 2 Hiến pháp năm 2013, nền tảng quyền lực của Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam là gì?",
+        options: [
+          "Liên minh giữa giai cấp công nhân với giai cấp nông dân và đội ngũ trí thức.",
+          "Liên minh giữa tầng lớp doanh nhân với các tổ chức quốc tế.",
+          "Sự phân chia quyền lực tuyệt đối giữa các đảng phái chính trị.",
+          "Quyền lực tập trung vào tầng lớp địa chủ và quý tộc."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Mục 1.2 • Trang 22–23",
+        explanation: "Khoản 2 Điều 2 Hiến pháp 2013 quy định Nhà nước CHXHCN Việt Nam là Nhà nước của Nhân dân, do Nhân dân, vì Nhân dân; <strong>nền tảng quyền lực nhà nước là liên minh giữa giai cấp công nhân với giai cấp nông dân và đội ngũ trí thức</strong>."
+      },
+      {
+        uid: "ch1_24",
+        chapter: 1,
+        origNum: 24,
+        question: "Hệ thống chính trị của nước Cộng hòa xã hội chủ nghĩa Việt Nam bao gồm những thành tố nào?",
+        options: [
+          "Đảng Cộng sản Việt Nam, Nhà nước CHXHCN Việt Nam, Mặt trận Tổ quốc Việt Nam và 05 tổ chức chính trị - xã hội.",
+          "Quốc hội, Chính phủ, Tòa án nhân dân, Viện kiểm sát nhân dân và Kiểm toán nhà nước.",
+          "Đảng Cộng sản Việt Nam, các doanh nghiệp nhà nước và các tổ chức phi chính phủ nước ngoài.",
+          "Mặt trận Tổ quốc Việt Nam, Hội Chữ thập đỏ và các hiệp hội doanh nghiệp tư nhân."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Mục 1.2 • Trang 23",
+        explanation: "Hệ thống chính trị nước ta gồm <strong>Đảng Cộng sản Việt Nam</strong>, <strong>Nhà nước CHXHCN Việt Nam</strong>, <strong>Mặt trận Tổ quốc Việt Nam</strong> và <strong>các tổ chức chính trị - xã hội khác</strong> (Đoàn TNCS Hồ Chí Minh, Hội Liên hiệp Phụ nữ VN, Công đoàn VN, Hội Nông dân VN, Hội Cựu chiến binh VN)."
+      },
+      {
+        uid: "ch1_25",
+        chapter: 1,
+        origNum: 25,
+        question: "Đặc điểm \"tính nhất nguyên chính trị\" của hệ thống chính trị nước Cộng hòa xã hội chủ nghĩa Việt Nam được hiểu như thế nào?",
+        options: [
+          "Chỉ có một cơ quan nhà nước duy nhất thực hiện cả ba quyền lập pháp, hành pháp và tư pháp.",
+          "Chỉ có một đảng duy nhất lãnh đạo là Đảng Cộng sản Việt Nam và kim chỉ nam là chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh.",
+          "Chỉ có một tổ chức chính trị - xã hội duy nhất đại diện cho mọi tầng lớp nhân dân.",
+          "Chỉ ban hành một văn bản quy phạm pháp luật duy nhất để điều chỉnh mọi quan hệ xã hội."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.2 • Trang 23",
+        explanation: "<strong>Tính nhất nguyên chính trị</strong> nghĩa là có <strong>một đảng duy nhất lãnh đạo là Đảng Cộng sản Việt Nam</strong>, các tổ chức thành viên đều do Đảng sáng lập, đường lối vận hành căn cứ vào kim chỉ nam là <strong>chủ nghĩa Mác - Lênin và tư tưởng Hồ Chí Minh</strong>."
+      },
+      {
+        uid: "ch1_26",
+        chapter: 1,
+        origNum: 26,
+        question: "Theo Khoản 3 Điều 2 Hiến pháp năm 2013, nguyên tắc tổ chức và thực hiện quyền lực nhà nước của nước Cộng hòa xã hội chủ nghĩa Việt Nam là gì?",
+        options: [
+          "Tam quyền phân lập tuyệt đối, độc lập hoàn toàn giữa ba nhánh quyền lực.",
+          "Quyền lực nhà nước là thống nhất, có sự phân công, phối hợp, kiểm soát giữa các cơ quan nhà nước trong việc thực hiện các quyền lập pháp, hành pháp, tư pháp.",
+          "Tập trung toàn bộ quyền lập pháp, hành pháp và tư pháp vào một cá nhân đứng đầu.",
+          "Phân quyền tự trị hoàn toàn cho từng địa phương mà không chịu sự giám sát từ trung ương."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.2 • Trang 25",
+        explanation: "Nguyên tắc phân công phối hợp quyền lực (<strong>Khoản 3 Điều 2 Hiến pháp 2013</strong>) khẳng định: <strong>Quyền lực nhà nước là thống nhất, có sự phân công, phối hợp, kiểm soát</strong> giữa các cơ quan nhà nước trong việc thực hiện các quyền lập pháp, hành pháp, tư pháp."
+      },
+      {
+        uid: "ch1_27",
+        chapter: 1,
+        origNum: 27,
+        question: "Căn cứ theo chức năng, cơ quan nào sau đây thuộc nhóm cơ quan quyền lực nhà nước ở nước ta?",
+        options: [
+          "Chính phủ và Ủy ban nhân dân các cấp.",
+          "Quốc hội và Hội đồng nhân dân các cấp.",
+          "Tòa án nhân dân và Viện kiểm sát nhân dân các cấp.",
+          "Chủ tịch nước và Kiểm toán nhà nước."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Mục 1.2 • Trang 25",
+        explanation: "Phân loại theo chức năng: <strong>Cơ quan quyền lực nhà nước</strong> gồm <strong>Quốc hội và Hội đồng nhân dân các cấp</strong>; cơ quan hành chính gồm Chính phủ, UBND; cơ quan xét xử gồm TAND; cơ quan kiểm sát gồm VKSND."
+      },
+      {
+        uid: "ch1_28",
+        chapter: 1,
+        origNum: 28,
+        question: "Theo Bảng 1 (Chương V Hiến pháp 2013), nhận định nào sau đây đúng về Quốc hội và Ủy ban Thường vụ Quốc hội?",
+        options: [
+          "Nhiệm kỳ Quốc hội là 04 năm, mỗi năm họp ít nhất 01 kỳ; thành viên UBTVQH có thể đồng thời là Bộ trưởng.",
+          "Nhiệm kỳ Quốc hội là 05 năm, mỗi năm họp ít nhất 02 kỳ; thành viên UBTVQH hoạt động chuyên trách và không đồng thời là thành viên Chính phủ.",
+          "Quốc hội do Chủ tịch nước bổ nhiệm; UBTVQH gồm Chủ tịch Quốc hội và các Chủ tịch UBND cấp tỉnh.",
+          "Quốc hội chỉ có quyền giám sát tối cao mà không có quyền lập hiến, lập pháp."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Bảng 1 • Trang 25–26",
+        explanation: "<strong>Nhiệm kỳ Quốc hội là 05 năm</strong>, mỗi năm họp ít nhất <strong>02 kỳ</strong> (có thể họp bất thường); <strong>Ủy ban Thường vụ Quốc hội</strong> là cơ quan thường trực của Quốc hội, gồm Chủ tịch, 04 Phó Chủ tịch và 13 Ủy viên hoạt động chuyên trách, <strong>không đồng thời là thành viên Chính phủ</strong>."
+      },
+      {
+        uid: "ch1_29",
+        chapter: 1,
+        origNum: 29,
+        question: "Theo Bảng 1 (Chương VI và Chương VII Hiến pháp 2013), nhận định nào sau đây đúng về cách thức hình thành và thẩm quyền của Chủ tịch nước và Thủ tướng Chính phủ?",
+        options: [
+          "Chủ tịch nước do cử tri cả nước trực tiếp bầu ra; Thủ tướng Chính phủ do Chủ tịch nước trực tiếp bổ nhiệm không cần qua Quốc hội.",
+          "Cả Chủ tịch nước và Thủ tướng Chính phủ đều do Quốc hội bầu trong số đại biểu Quốc hội; Chủ tịch nước có quyền quyết định đặc xá và công bố đại xá.",
+          "Chủ tịch nước có quyền quyết định đại xá; Thủ tướng Chính phủ do Ủy ban Thường vụ Quốc hội bầu ra.",
+          "Chủ tịch nước không nhất thiết là đại biểu Quốc hội; Thủ tướng Chính phủ có nhiệm kỳ 10 năm."
+        ],
+        correctIndex: 1,
+        ref: "Chương 1 • Bảng 1 • Trang 26–27",
+        explanation: "<strong>Chủ tịch nước</strong> do Quốc hội bầu trong số đại biểu Quốc hội, có thẩm quyền <strong>quyết định đặc xá và công bố đại xá</strong> (Quốc hội quyết định đại xá); <strong>Thủ tướng Chính phủ</strong> cũng do Quốc hội bầu trong số đại biểu Quốc hội theo đề nghị của Chủ tịch nước."
+      },
+      {
+        uid: "ch1_30",
+        chapter: 1,
+        origNum: 30,
+        question: "Theo Bảng 1 (cập nhật Luật Tổ chức TAND 2024 sửa đổi 2025, Luật Tổ chức VKSND sửa đổi 2025 và Luật Tổ chức chính quyền địa phương 2025), cơ cấu tổ chức của Tòa án nhân dân, Viện kiểm sát nhân dân và chính quyền địa phương hiện nay là gì?",
+        options: [
+          "TAND và VKSND tổ chức theo 03 cấp (Tối cao, cấp tỉnh, cấp khu vực); HĐND và UBND tổ chức ở 02 cấp đơn vị hành chính (tỉnh và xã).",
+          "TAND và VKSND tổ chức theo 04 cấp (Tối cao, cấp cao, cấp tỉnh, cấp huyện); HĐND và UBND tổ chức ở 03 cấp (tỉnh, huyện, xã).",
+          "TAND tổ chức ở 02 cấp; VKSND tổ chức ở 04 cấp; HĐND chỉ có ở cấp tỉnh.",
+          "Tất cả các cơ quan TAND, VKSND, HĐND và UBND đều chỉ tổ chức duy nhất ở cấp trung ương và cấp tỉnh."
+        ],
+        correctIndex: 0,
+        ref: "Chương 1 • Bảng 1 • Trang 28–31",
+        explanation: "Theo quy định cập nhật 2025 trong giáo trình: <strong>TAND và VKSND</strong> được tổ chức theo chiều dọc gồm <strong>03 cấp</strong> (Tối cao ở trung ương, cấp tỉnh và cấp khu vực, cùng hệ thống Tòa án quân sự/VKS quân sự 3 cấp); <strong>HĐND và UBND</strong> được tổ chức ở <strong>02 cấp đơn vị hành chính</strong> (tỉnh và xã) theo Luật Tổ chức chính quyền địa phương 2025."
+      },
+
       // -------------------- CHƯƠNG 3: 28 CÂU --------------------
       {
         uid: "ch3_1",
@@ -1174,7 +1644,7 @@
     const questionLookup = Object.fromEntries(MASTER_QUESTIONS.map((q) => [q.uid, q]));
 
     let state = {
-      activeTab: 'ch3',          // 'ch3' | 'ch4' | 'mix'
+      activeTab: 'ch1',          // 'ch1' | 'ch3' | 'ch4' | 'mix' (Mặc định mở ngay Chương 1)
       shuffleOptions: true,      // Mặc định bật trộn cả thứ tự đáp án A, B, C, D
       deck: [],                  // Danh sách câu hỏi đã xáo trộn cho Tab hiện tại: [{ uid, optionOrder: [0..3] }]
       userAnswers: {},           // { [uid]: originalOptionIndex (0..3) }
@@ -1188,7 +1658,9 @@
     // Tạo danh sách câu hỏi mới đã được xáo trộn bằng Fisher-Yates cho Tab chỉ định
     function buildShuffledDeck(tabId) {
       let pool = [];
-      if (tabId === 'ch3') {
+      if (tabId === 'ch1') {
+        pool = MASTER_QUESTIONS.filter((q) => q.chapter === 1);
+      } else if (tabId === 'ch3') {
         pool = MASTER_QUESTIONS.filter((q) => q.chapter === 3);
       } else if (tabId === 'ch4') {
         pool = MASTER_QUESTIONS.filter((q) => q.chapter === 4);
@@ -1406,16 +1878,18 @@
 
       // Phụ đề trang sách theo Tab
       const subtitleEl = document.getElementById('header-subtitle');
-      if (state.activeTab === 'ch3') {
-        subtitleEl.textContent = '• Chương 3 (Tr.58–70)';
+      if (state.activeTab === 'ch1') {
+        subtitleEl.textContent = '• Chương 1: Nhà nước (Tr.11–31)';
+      } else if (state.activeTab === 'ch3') {
+        subtitleEl.textContent = '• Chương 3: Hiến pháp (Tr.58–70)';
       } else if (state.activeTab === 'ch4') {
-        subtitleEl.textContent = '• Chương 4 (Tr.74–98)';
+        subtitleEl.textContent = '• Chương 4: Hành chính & TTHC (Tr.74–98)';
       } else {
-        subtitleEl.textContent = '• Tổng hợp (Tr.58–98)';
+        subtitleEl.textContent = '• Thi thử tổng hợp (Tr.11–98)';
       }
 
-      // Cập nhật giao diện 3 Tab gọn 1 dòng
-      ['ch3', 'ch4', 'mix'].forEach((t) => {
+      // Cập nhật giao diện 4 Tab gọn
+      ['ch1', 'ch3', 'ch4', 'mix'].forEach((t) => {
         const tabBtn = document.getElementById(`tab-${t}`);
         if (state.activeTab === t) {
           tabBtn.className = 'px-2 py-1 rounded-md text-xs font-bold transition-all text-center bg-white text-brand-950 shadow-xs truncate';
