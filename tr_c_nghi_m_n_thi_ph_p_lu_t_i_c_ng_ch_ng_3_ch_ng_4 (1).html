@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trắc nghiệm Ôn thi Pháp luật Đại cương – Chương 3 &amp; Chương 4</title>
+  <!-- Tải Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tải font Inter hỗ trợ tiếng Việt sắc nét -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              950: '#0b1739',
+              900: '#162b65',
+              800: '#1e3a8a',
+              700: '#1d4ed8',
+              600: '#2563eb',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Hiệu ứng mở khung giải thích lý thuyết */
+    @keyframes slideFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-explain {
+      animation: slideFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Hiệu ứng thông báo Toast khi đảo câu hỏi */
+    @keyframes toastPop {
+      0% { opacity: 0; transform: translate(-50%, 16px) scale(0.96); }
+      15% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      85% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -8px) scale(0.98); }
+    }
+    .animate-toast {
+      animation: toastPop 2.2s ease-in-out forwards;
+    }
+
+    /* Ẩn thanh cuộn ngang cho dải Tab / Bộ lọc trên mobile */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased">
+
+  <!-- HEADER CỐ ĐỊNH (STICKY NAVIGATION & STATS) -->
+  <header class="sticky top-0 z-30 bg-brand-950 text-white shadow-lg border-b border-blue-900/90">
+    <div class="max-w-4xl mx-auto px-3.5 sm:px-5 pt-3 pb-3">
+      <!-- Hàng 1: Tiêu đề & Thống kê kết quả -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-900/90 text-amber-300 border border-blue-700/80">
+              ⚖️ Pháp luật Đại cương
+            </span>
+            <span id="header-subtitle" class="text-xs text-blue-200 font-medium">
+              Giáo trình Trang 58 – 70
+            </span>
+          </div>
+          <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white mt-1 leading-snug">
+            Trắc nghiệm Ôn thi Chương 3 &amp; Chương 4
+          </h1>
+        </div>
+
+        <!-- Bảng thống kê tiến độ -->
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-semibold shrink-0">
+          <div class="px-2.5 py-1.5 rounded-xl bg-blue-900/70 border border-blue-800 flex items-center gap-1.5">
+            <span class="text-blue-200 font-medium">Đã làm:</span>
+            <span id="stat-answered" class="font-bold text-white">0/28</span>
+          </div>
+          <div class="px-2.5 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-600/60 flex items-center gap-1 text-emerald-300" title="Số câu trả lời đúng">
+            <span>✓ Đúng:</span>
+            <span id="stat-correct" class="font-extrabold">0</span>
+          </div>
+          <div class="px-2.5 py-1.5 rounded-xl bg-rose-950/90 border border-rose-600/60 flex items-center gap-1 text-rose-300" title="Số câu trả lời sai">
+            <span>✗ Sai:</span>
+            <span id="stat-wrong" class="font-extrabold">0</span>
+          </div>
+          <div class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center gap-1 text-amber-300" title="Tỷ lệ hoàn thành">
+            <span class="text-amber-200 font-medium">Tiến độ:</span>
+            <span id="stat-progress" class="font-extrabold">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thanh tiến độ trực quan -->
+      <div class="mt-2.5">
+        <div class="w-full h-1.5 bg-blue-900/90 rounded-full overflow-hidden">
+          <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-300 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Hàng 2: 3 TAB CHỌN CHƯƠNG -->
+      <nav aria-label="Chọn phần ôn tập" class="mt-3 grid grid-cols-3 gap-1.5 bg-blue-900/60 p-1 rounded-xl border border-blue-800/80">
+        <button
+          id="tab-ch3"
+          type="button"
+          onclick="switchTab('ch3')"
+          class="px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight bg-white text-brand-950 shadow-sm"
+        >
+          <span class="block">Chương 3</span>
+          <span class="block text-[10px] sm:text-[11px] font-medium opacity-80">Hiến pháp (28 câu)</span>
+        </button>
+
+        <button
+          id="tab-ch4"
+          type="button"
+          onclick="switchTab('ch4')"
+          class="px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight text-blue-200 hover:text-white hover:bg-blue-800/50"
+        >
+          <span class="block">Chương 4</span>
+          <span class="block text-[10px] sm:text-[11px] font-medium opacity-80">Hành chính (25 câu)</span>
+        </button>
+
+        <button
+          id="tab-mix"
+          type="button"
+          onclick="switchTab('mix')"
+          class="px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight text-blue-200 hover:text-white hover:bg-blue-800/50"
+        >
+          <span class="block">Thi thử tổng hợp</span>
+          <span class="block text-[10px] sm:text-[11px] font-medium opacity-80">Chương 3 &amp; 4 (53 câu)</span>
+        </button>
+      </nav>
+
+      <!-- Hàng 3: Công cụ Đảo câu hỏi, Trộn đáp án, Giải thích & Làm lại -->
+      <div class="mt-2.5 pt-2.5 border-t border-blue-900/90 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Nút Đảo thứ tự câu hỏi -->
+          <button
+            type="button"
+            onclick="manualShuffleQuestions()"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-xs"
+            title="Xáo trộn ngẫu nhiên thứ tự các câu hỏi hiện tại"
+          >
+            <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Đảo thứ tự câu hỏi
+          </button>
+
+          <!-- Checkbox Trộn cả thứ tự đáp án A, B, C, D -->
+          <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-blue-900/70 border border-blue-800 text-xs font-medium text-blue-100 cursor-pointer hover:bg-blue-800/80 transition-colors select-none">
+            <input
+              id="chk-shuffle-options"
+              type="checkbox"
+              checked
+              onchange="toggleShuffleOptions(this.checked)"
+              class="w-3.5 h-3.5 rounded accent-amber-400 cursor-pointer"
+            />
+            <span>Trộn cả thứ tự đáp án A, B, C, D</span>
+          </label>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5">
+          <!-- Nút Hiện tất cả giải thích / Ẩn giải thích -->
+          <button
+            id="btn-toggle-all-explain"
+            type="button"
+            onclick="toggleAllExplanations()"
+            class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs"
+          >
+            <span>📖</span>
+            <span id="label-toggle-all-explain">Hiện tất cả giải thích</span>
+          </button>
+
+          <!-- Nút Làm lại từ đầu -->
+          <button
+            type="button"
+            onclick="openResetModal()"
+            class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/20 text-rose-200 hover:bg-rose-600 hover:text-white border border-rose-400/40 transition-colors flex items-center gap-1"
+          >
+            <span>↺ Làm lại từ đầu</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hàng 4: Bộ lọc trạng thái & Chế độ xem -->
+      <div class="mt-2 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-0.5">
+        <div class="flex items-center gap-1.5">
+          <button
+            id="filter-all"
+            type="button"
+            onclick="setFilter('all')"
+            class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-brand-950 shadow-xs whitespace-nowrap transition-colors"
+          >
+            Tất cả (<span id="count-all">28</span>)
+          </button>
+          <button
+            id="filter-unanswered"
+            type="button"
+            onclick="setFilter('unanswered')"
+            class="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
+          >
+            Chưa làm (<span id="count-unanswered">28</span>)
+          </button>
+          <button
+            id="filter-wrong"
+            type="button"
+            onclick="setFilter('wrong')"
+            class="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors"
+          >
+            Câu làm sai (<span id="count-wrong">0</span>)
+          </button>
+        </div>
+
+        <!-- Chuyển chế độ xem Danh sách / Từng câu -->
+        <div class="inline-flex rounded-lg bg-blue-900/80 p-0.5 border border-blue-800 shrink-0">
+          <button
+            id="btn-mode-all"
+            type="button"
+            onclick="setViewMode('all')"
+            class="px-2 py-1 rounded-md text-[11px] font-semibold transition-all bg-blue-600 text-white"
+          >
+            Danh sách
+          </button>
+          <button
+            id="btn-mode-single"
+            type="button"
+            onclick="setViewMode('single')"
+            class="px-2 py-1 rounded-md text-[11px] font-semibold transition-all text-blue-200 hover:text-white"
+          >
+            Từng câu
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NỘI DUNG CHÍNH -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-3.5 sm:px-5 py-5 sm:py-7">
+    <!-- Bảng điều hướng nhanh (chỉ hiện ở chế độ Từng câu) -->
+    <div id="single-navigator" class="hidden mb-5 bg-white rounded-2xl p-3.5 sm:p-4 shadow-xs border border-slate-200">
+      <div class="flex items-center justify-between mb-2.5">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Chọn nhanh câu hỏi</span>
+        <span id="single-counter-label" class="text-xs font-bold text-brand-900">Câu 1 / 28</span>
+      </div>
+      <div id="question-pills" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Danh sách thẻ câu hỏi -->
+    <div id="quiz-container" class="space-y-5"></div>
+
+    <!-- Thanh điều hướng Trước / Sau (chỉ hiện ở chế độ Từng câu) -->
+    <div id="single-controls" class="hidden mt-6 flex items-center justify-between gap-3">
+      <button
+        id="btn-prev"
+        type="button"
+        onclick="navigateSingle(-1)"
+        class="flex-1 sm:flex-none px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 active:scale-[0.99] disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center justify-center gap-2 shadow-xs"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Câu trước
+      </button>
+
+      <button
+        id="btn-next"
+        type="button"
+        onclick="navigateSingle(1)"
+        class="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-brand-900 text-white font-semibold text-sm hover:bg-brand-800 active:scale-[0.99] disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center justify-center gap-2 shadow-xs"
+      >
+        Câu tiếp theo
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="max-w-4xl w-full mx-auto px-4 py-6 text-center text-xs text-slate-400">
+    Ôn tập Pháp luật Đại cương • Chương 3: Hiến pháp 2013 (Tr.58–70) &amp; Chương 4: Luật Hành chính &amp; TTHC (Tr.74–98)
+  </footer>
+
+  <!-- TOAST THÔNG BÁO KHI ĐẢO THỨ TỰ CÂU HỎI -->
+  <div id="toast-container" class="fixed bottom-6 left-1/2 z-50 pointer-events-none"></div>
+
+  <!-- MODAL XÁC NHẬN LÀM LẠI TỪ ĐẦU (Thay thế confirm()) -->
+  <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-200 animate-explain">
+      <div class="flex items-center gap-3 text-rose-600 mb-3">
+        <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-slate-900">Làm lại từ đầu?</h3>
+      </div>
+      <p class="text-sm text-slate-600 leading-relaxed mb-5">
+        Toàn bộ đáp án đã chọn trong phần ôn tập hiện tại sẽ được xóa và hệ thống sẽ <strong>tự động đảo ngẫu nhiên thứ tự câu hỏi mới</strong>.
+      </p>
+      <div class="flex items-center justify-end gap-2.5">
+        <button
+          type="button"
+          onclick="closeResetModal()"
+          class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="button"
+          onclick="confirmResetQuiz()"
+          class="px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 transition-colors shadow-xs"
+        >
+          Đồng ý làm lại
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // DỮ LIỆU GỐC: 28 CÂU CHƯƠNG 3 (TRANG 58–70) & 25 CÂU CHƯƠNG 4 (TRANG 74–98)
+    // =========================================================================
+    const MASTER_QUESTIONS = [
+      // -------------------- CHƯƠNG 3: 28 CÂU --------------------
+      {
+        uid: "ch3_1",
+        chapter: 3,
+        origNum: 1,
+        question: "Thuật ngữ \"Hiến pháp\" có nguồn gốc từ tiếng La tinh \"Constitutio\" mang ý nghĩa ban đầu là gì?",
+        options: [
+          "Quyền lực tối cao",
+          "Xác định, quy định",
+          "Khế ước xã hội",
+          "Tự do, dân chủ"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.1 • Trang 58",
+        explanation: "Thuật ngữ \"Hiến pháp\" có nguồn gốc từ tiếng La tinh <strong>\"Constitutio\"</strong> với ý nghĩa là <strong>xác định, quy định</strong>. Theo nghĩa hiện đại ngày nay, Hiến pháp là đạo luật cơ bản có hiệu lực pháp lý cao nhất."
+      },
+      {
+        uid: "ch3_2",
+        chapter: 3,
+        origNum: 2,
+        question: "Văn bản nào sau đây được ghi nhận là văn bản có tính chất hiến pháp đầu tiên ra đời trong Cách mạng tư sản ở nước Anh?",
+        options: [
+          "Đại Hiến chương Magna Carta năm 1215",
+          "Đạo luật về Hình thức cai quản Nhà nước Anh, Xcốtlen, Ailen và những địa phận thuộc chúng năm 1653",
+          "Đạo luật Quyền năm 1689 của Nghị viện Anh",
+          "Hiến pháp thành văn Vương quốc Anh năm 1640"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.1 • Trang 58",
+        explanation: "Văn bản có tính chất hiến pháp đầu tiên ra đời trong Cách mạng tư sản ở nước Anh (1640–1654) là <strong>đạo luật năm 1653</strong> về <em>\"Hình thức cai quản Nhà nước Anh, Xcốtlen, Ailen và những địa phận thuộc chúng\"</em>, quy định hình thức tổ chức quyền lực mới."
+      },
+      {
+        uid: "ch3_3",
+        chapter: 3,
+        origNum: 3,
+        question: "Bản Hiến pháp thành văn đầu tiên trên thế giới là Hiến pháp của quốc gia nào và được ban hành vào năm nào?",
+        options: [
+          "Hiến pháp Pháp năm 1791",
+          "Hiến pháp Ba Lan năm 1791",
+          "Hiến pháp Hoa Kỳ năm 1787",
+          "Hiến pháp Na-uy năm 1814"
+        ],
+        correctIndex: 2,
+        ref: "Chương 3 • Mục 1.1 • Trang 58",
+        explanation: "<strong>Hiến pháp Hoa Kỳ năm 1787</strong> là bản <strong>Hiến pháp thành văn đầu tiên trên thế giới</strong>, tiếp đến là Hiến pháp của Pháp và của Ba Lan năm 1791, Na-uy năm 1814, Bỉ năm 1831..."
+      },
+      {
+        uid: "ch3_4",
+        chapter: 3,
+        origNum: 4,
+        question: "Đặc trưng nào của Hiến pháp khẳng định Hiến pháp tạo ra khuôn khổ hiến định để tránh việc tùy tiện, lạm quyền của các cơ quan nhà nước?",
+        options: [
+          "Hiến pháp là luật bảo vệ",
+          "Hiến pháp là luật tổ chức",
+          "Hiến pháp là luật cơ bản",
+          "Hiến pháp là đạo luật có tính ổn định tuyệt đối"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.1 • Trang 59",
+        explanation: "Đặc trưng thứ hai: <strong>Hiến pháp là luật tổ chức</strong> — văn bản khẳng định quyền lực nhà nước thông qua quy định về tổ chức và hoạt động của các cơ quan nhà nước từ trung ương đến địa phương, <strong>tạo ra khuôn khổ hiến định để tránh việc tùy tiện, lạm quyền</strong>, góp phần bảo đảm nhân quyền."
+      },
+      {
+        uid: "ch3_5",
+        chapter: 3,
+        origNum: 5,
+        question: "Đặc trưng \"Hiến pháp là luật bảo vệ\" được thể hiện chủ yếu qua nội dung nào?",
+        options: [
+          "Bảo vệ tuyệt đối quyền lực của bộ máy hành chính nhà nước",
+          "Ghi nhận các quyền cơ bản của con người và công dân được tôn trọng, không bị xâm phạm và được bảo đảm, bảo vệ",
+          "Bảo vệ sự tồn tại vĩnh viễn của tất cả các đạo luật hiện hành",
+          "Chỉ bảo vệ quyền sở hữu tài sản của các doanh nghiệp nhà nước"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.1 • Trang 59",
+        explanation: "Đặc trưng thứ nhất: <strong>Hiến pháp là luật bảo vệ</strong> — là văn bản ghi nhận các <strong>quyền cơ bản của con người và công dân</strong> không những được các cơ quan nhà nước tôn trọng, không được xâm phạm, mà còn <strong>được bảo đảm, bảo vệ</strong> các quyền đó."
+      },
+      {
+        uid: "ch3_6",
+        chapter: 3,
+        origNum: 6,
+        question: "Vì sao trước Cách mạng tháng Tám năm 1945, Việt Nam không có Hiến pháp?",
+        options: [
+          "Vì trình độ kỹ thuật lập pháp chưa phát triển",
+          "Vì nước ta là thuộc địa nửa phong kiến với chế độ quân chủ chuyên chế",
+          "Vì nhân dân chưa có nhu cầu ban hành luật thành văn",
+          "Vì các nước phương Tây cấm ban hành Hiến pháp ở thuộc địa"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.1 • Trang 60",
+        explanation: "Trước Cách mạng tháng Tám 1945, Việt Nam <strong>không có Hiến pháp</strong> do là <strong>thuộc địa nửa phong kiến với chế độ quân chủ chuyên chế</strong>. Sau Cách mạng tháng Tám 1945 thành công, Chủ tịch Hồ Chí Minh khẳng định phải xây dựng một Hiến pháp dân chủ."
+      },
+      {
+        uid: "ch3_7",
+        chapter: 3,
+        origNum: 7,
+        question: "Bản Hiến pháp đầu tiên của nước Việt Nam Dân chủ Cộng hòa được Quốc hội thông qua vào ngày, tháng, năm nào?",
+        options: [
+          "Ngày 02/09/1945",
+          "Ngày 06/01/1946",
+          "Ngày 09/11/1946",
+          "Ngày 31/12/1959"
+        ],
+        correctIndex: 2,
+        ref: "Chương 3 • Mục 1.2.1 • Trang 60",
+        explanation: "Ngày <strong>09/11/1946</strong>, Quốc hội đã thông qua <strong>bản Hiến pháp đầu tiên</strong> của nước ta (Hiến pháp năm 1946)."
+      },
+      {
+        uid: "ch3_8",
+        chapter: 3,
+        origNum: 8,
+        question: "Lịch sử lập hiến Việt Nam từ năm 1945 đến nay đã trải qua tổng cộng bao nhiêu bản Hiến pháp?",
+        options: [
+          "4 bản Hiến pháp",
+          "5 bản Hiến pháp",
+          "6 bản Hiến pháp",
+          "7 bản Hiến pháp"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.1 • Trang 60",
+        explanation: "Lịch sử lập hiến nước ta trải qua <strong>5 bản Hiến pháp</strong> gồm: <strong>Hiến pháp năm 1946, Hiến pháp năm 1959, Hiến pháp năm 1980, Hiến pháp năm 1992</strong> (sửa đổi, bổ sung năm 2001) và <strong>Hiến pháp năm 2013</strong> (sửa đổi, bổ sung năm 2025)."
+      },
+      {
+        uid: "ch3_9",
+        chapter: 3,
+        origNum: 9,
+        question: "Hiến pháp năm 2013 được Quốc hội ban hành và chính thức có hiệu lực vào những mốc thời gian nào?",
+        options: [
+          "Ban hành ngày 28/11/2013, có hiệu lực từ ngày 01/01/2014",
+          "Ban hành ngày 02/09/2013, có hiệu lực từ ngày 28/11/2013",
+          "Ban hành ngày 15/04/2013, có hiệu lực từ ngày 01/07/2014",
+          "Ban hành ngày 28/11/2013, có hiệu lực từ ngày 01/07/2014"
+        ],
+        correctIndex: 0,
+        ref: "Chương 3 • Mục 1.2.1 • Trang 60",
+        explanation: "<strong>Hiến pháp 2013</strong> được ban hành ngày <strong>28/11/2013</strong> và chính thức có hiệu lực thi hành từ ngày <strong>01/01/2014</strong>."
+      },
+      {
+        uid: "ch3_10",
+        chapter: 3,
+        origNum: 10,
+        question: "Theo Nghị quyết số 203/2025/QH15 ngày 16/6/2025 sửa đổi, bổ sung một số điều của Hiến pháp năm 2013, tổ chức đơn vị hành chính của nước ta được điều chỉnh như thế nào?",
+        options: [
+          "Giữ nguyên mô hình 3 cấp gồm cấp tỉnh, cấp huyện và cấp xã",
+          "Điều chỉnh từ ba cấp thành hai cấp và kết thúc đơn vị hành chính cấp huyện trên phạm vi toàn quốc từ ngày 01/7/2025",
+          "Điều chỉnh từ ba cấp thành bốn cấp hành chính",
+          "Chỉ giữ lại một cấp hành chính duy nhất ở địa phương là cấp tỉnh"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.1 • Trang 61",
+        explanation: "Ngày <strong>16/6/2025</strong>, Quốc hội thông qua <strong>Nghị quyết 203/2025/QH15</strong> sửa đổi, bổ sung một số điều của Hiến pháp 2013: điều chỉnh tổ chức đơn vị hành chính từ <strong>ba cấp thành hai cấp</strong> (tỉnh/thành phố trực thuộc trung ương và đơn vị hành chính dưới tỉnh/thành phố trực thuộc trung ương), <strong>kết thúc đơn vị hành chính cấp huyện trên phạm vi toàn quốc từ ngày 01/7/2025</strong>."
+      },
+      {
+        uid: "ch3_11",
+        chapter: 3,
+        origNum: 11,
+        question: "Theo Điều 120 Hiến pháp 2013, những chủ thể nào sau đây có quyền đề nghị làm Hiến pháp, sửa đổi Hiến pháp?",
+        options: [
+          "Chủ tịch nước, Ủy ban Thường vụ Quốc hội, Chính phủ hoặc ít nhất 1/3 tổng số đại biểu Quốc hội",
+          "Chánh án Tòa án nhân dân tối cao, Viện trưởng VKSND tối cao hoặc 1/2 tổng số đại biểu Quốc hội",
+          "Chủ tịch nước, Thủ tướng Chính phủ, Chủ tịch Quốc hội hoặc Mặt trận Tổ quốc Việt Nam",
+          "Ủy ban Thường vụ Quốc hội, Hội đồng dân tộc hoặc ít nhất 2/3 tổng số đại biểu Quốc hội"
+        ],
+        correctIndex: 0,
+        ref: "Chương 3 • Mục 1.2.2 • Trang 62",
+        explanation: "Theo <strong>Điều 120 Hiến pháp 2013</strong>, chủ thể được đề nghị ban hành, sửa đổi Hiến pháp gồm: <strong>Chủ tịch nước, Ủy ban Thường vụ Quốc hội, Chính phủ hoặc ít nhất 1/3 tổng số đại biểu Quốc hội</strong>."
+      },
+      {
+        uid: "ch3_12",
+        chapter: 3,
+        origNum: 12,
+        question: "Theo Điều 120 Hiến pháp 2013, Hiến pháp chỉ được thông qua khi đạt tỷ lệ tán thành tối thiểu là bao nhiêu và chủ thể nào quyết định việc trưng cầu ý dân về Hiến pháp?",
+        options: [
+          "Quá nửa tổng số đại biểu Quốc hội tán thành; Chủ tịch nước quyết định trưng cầu ý dân",
+          "Ít nhất 2/3 tổng số đại biểu Quốc hội tán thành; Quốc hội quyết định trưng cầu ý dân",
+          "Ít nhất 3/4 tổng số đại biểu Quốc hội tán thành; Ủy ban Thường vụ Quốc hội quyết định trưng cầu ý dân",
+          "100% đại biểu Quốc hội có mặt tán thành; Chính phủ quyết định trưng cầu ý dân"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.2 • Trang 62",
+        explanation: "Hiến pháp chỉ được thông qua khi có <strong>ít nhất 2/3 tổng số đại biểu Quốc hội tán thành</strong>; việc <strong>trưng cầu ý dân về Hiến pháp do Quốc hội quyết định</strong> (Điều 120 Hiến pháp 2013)."
+      },
+      {
+        uid: "ch3_13",
+        chapter: 3,
+        origNum: 13,
+        question: "Hiến pháp năm 2013 của nước Cộng hòa xã hội chủ nghĩa Việt Nam có bố cục gồm bao nhiêu chương và bao nhiêu điều?",
+        options: [
+          "10 chương, 115 điều",
+          "11 chương, 120 điều",
+          "12 chương, 147 điều",
+          "11 chương, 125 điều"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3 • Trang 63",
+        explanation: "Hiến pháp nước CHXHCN Việt Nam năm 2013 có bố cục gồm <strong>11 chương, 120 điều</strong> (Chương 1: Chế độ chính trị; Chương 2: Quyền con người, quyền và nghĩa vụ cơ bản của công dân; Chương 3 & 4: Kinh tế, xã hội, văn hóa, giáo dục, KHCN, môi trường và Bảo vệ Tổ quốc; Chương 5–10: Tổ chức bộ máy nhà nước; Chương 11: Hiệu lực và sửa đổi Hiến pháp)."
+      },
+      {
+        uid: "ch3_14",
+        chapter: 3,
+        origNum: 14,
+        question: "Theo Hiến pháp 2013, nguyên tắc tổ chức và thực hiện quyền lực nhà nước ở Việt Nam được xác định như thế nào?",
+        options: [
+          "Tam quyền phân lập tuyệt đối giữa lập pháp, hành pháp và tư pháp",
+          "Quyền lực nhà nước là thống nhất, có sự phân công, phối hợp và kiểm soát giữa các cơ quan nhà nước trong việc thực hiện các quyền lập pháp, hành pháp và tư pháp",
+          "Quyền lực nhà nước tập trung toàn bộ vào cơ quan hành pháp ở trung ương",
+          "Phân chia quyền lực độc lập giữa chính quyền trung ương và chính quyền địa phương"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.1 • Trang 63",
+        explanation: "Quyền lực nhà nước ở nước ta được tổ chức theo nguyên tắc: <strong>quyền lực nhà nước là thống nhất, có sự phân công, phối hợp và kiểm soát giữa các cơ quan nhà nước</strong> trong việc thực hiện các quyền <strong>lập pháp, hành pháp và tư pháp</strong> (nền tảng là liên minh giai cấp công nhân với giai cấp nông dân và đội ngũ trí thức)."
+      },
+      {
+        uid: "ch3_15",
+        chapter: 3,
+        origNum: 15,
+        question: "Hệ thống chính trị của nước Cộng hòa xã hội chủ nghĩa Việt Nam theo quy định của Hiến pháp 2013 bao gồm những bộ phận cấu thành nào?",
+        options: [
+          "Quốc hội, Chính phủ, Tòa án nhân dân và Viện kiểm sát nhân dân",
+          "Đảng Cộng sản Việt Nam; Nhà nước CHXHCN Việt Nam; Mặt trận Tổ quốc Việt Nam và các tổ chức chính trị - xã hội",
+          "Đảng Cộng sản Việt Nam, Chính phủ và chính quyền địa phương các cấp",
+          "Nhà nước CHXHCN Việt Nam, các tổ chức xã hội - nghề nghiệp và các doanh nghiệp nhà nước"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.1 • Trang 64",
+        explanation: "Hệ thống chính trị nước CHXHCN Việt Nam bao gồm 3 bộ phận cấu thành: <strong>(1) Đảng Cộng sản Việt Nam; (2) Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam; (3) Mặt trận Tổ quốc Việt Nam và các tổ chức chính trị - xã hội</strong>."
+      },
+      {
+        uid: "ch3_16",
+        chapter: 3,
+        origNum: 16,
+        question: "Theo Hiến pháp 2013, Nhân dân thực hiện quyền lực nhà nước bằng những phương thức nào?",
+        options: [
+          "Chỉ bằng hình thức dân chủ trực tiếp thông qua trưng cầu ý dân",
+          "Chỉ bằng hình thức dân chủ đại diện thông qua Quốc hội",
+          "Bằng dân chủ trực tiếp, bằng dân chủ đại diện thông qua Quốc hội, Hội đồng nhân dân và thông qua các cơ quan khác của Nhà nước",
+          "Thông qua hoạt động tự quản của các tổ chức xã hội nghề nghiệp"
+        ],
+        correctIndex: 2,
+        ref: "Chương 3 • Mục 1.2.3.1 • Trang 64",
+        explanation: "Nhân dân thực hiện quyền lực nhà nước của mình bằng <strong>dân chủ trực tiếp</strong> và <strong>dân chủ đại diện</strong> thông qua các cơ quan nhà nước."
+      },
+      {
+        uid: "ch3_17",
+        chapter: 3,
+        origNum: 17,
+        question: "Theo Điều 13 Hiến pháp 2013 mô tả về Quốc kỳ nước CHXHCN Việt Nam, tỷ lệ giữa chiều rộng và chiều dài của lá cờ được quy định như thế nào?",
+        options: [
+          "Chiều rộng bằng 1/2 chiều dài",
+          "Chiều rộng bằng 2/3 chiều dài",
+          "Chiều rộng bằng 3/4 chiều dài",
+          "Chiều rộng bằng 3/5 chiều dài"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.1 (Bảng 3) • Trang 65",
+        explanation: "Theo <strong>Điều 13 Hiến pháp 2013</strong>, Quốc kỳ nước CHXHCN Việt Nam hình chữ nhật, <strong>chiều rộng bằng 2/3 chiều dài</strong>, nền đỏ, ở giữa có ngôi sao vàng năm cánh (nền đỏ tượng trưng máu anh hùng, cách mạng; sao vàng tượng trưng linh hồn dân tộc, 5 cánh tượng trưng 5 tầng lớp sĩ, nông, công, thương, binh)."
+      },
+      {
+        uid: "ch3_18",
+        chapter: 3,
+        origNum: 18,
+        question: "Điểm đổi mới nổi bật của Chương II (Quyền con người, quyền và nghĩa vụ cơ bản của công dân) trong Hiến pháp năm 2013 là gì?",
+        options: [
+          "Lần đầu tiên đưa khái niệm \"quyền con người\" (nhân quyền) vào Hiến pháp và phân biệt rõ với \"quyền công dân\"",
+          "Xóa bỏ hoàn toàn các quy định về nghĩa vụ cơ bản của công dân",
+          "Quy định mọi quyền con người đều không bao giờ bị hạn chế trong bất kỳ hoàn cảnh nào",
+          "Đưa chương Quyền con người xuống vị trí Chương V của Hiến pháp"
+        ],
+        correctIndex: 0,
+        ref: "Chương 3 • Mục 1.2.3.2 • Trang 65–66",
+        explanation: "<strong>Chương II Hiến pháp 2013 gồm 36 Điều</strong> (được đưa lên vị trí trang trọng thứ hai ngay sau Chương Chế độ chính trị). Đây là <strong>lần đầu tiên khái niệm \"quyền con người\" (nhân quyền)</strong> được đề cập và <strong>phân biệt rõ với \"quyền công dân\"</strong> trong Hiến pháp Việt Nam."
+      },
+      {
+        uid: "ch3_19",
+        chapter: 3,
+        origNum: 19,
+        question: "Quyền nào sau đây thuộc \"Nhóm quyền cơ bản về dân sự\" theo phân loại trong giáo trình?",
+        options: [
+          "Quyền bầu cử và ứng cử (Điều 27)",
+          "Quyền bất khả xâm phạm về chỗ ở (Điều 22) và quyền tự do tín ngưỡng, tôn giáo (Điều 24)",
+          "Quyền sở hữu tư nhân và quyền thừa kế (Điều 32)",
+          "Quyền khiếu nại, tố cáo (Điều 30)"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.2 • Trang 66",
+        explanation: "<strong>Nhóm quyền cơ bản về dân sự</strong> thể hiện sự tôn trọng của Nhà nước và xã hội đối với tự do cá nhân, gồm: <strong>Quyền sống (Điều 19); Quyền bất khả xâm phạm về chỗ ở (Điều 22); Quyền tự do tín ngưỡng, tôn giáo (Điều 24); Quyền tự do ngôn luận, tự do báo chí (Điều 25); Quyền kết hôn, ly hôn (Điều 36)</strong>... (Quyền bầu cử, khiếu nại thuộc nhóm chính trị; quyền sở hữu thuộc nhóm kinh tế, xã hội, văn hóa)."
+      },
+      {
+        uid: "ch3_20",
+        chapter: 3,
+        origNum: 20,
+        question: "Theo Điều 27 Hiến pháp 2013, độ tuổi của công dân Việt Nam để có quyền bầu cử và quyền ứng cử vào Quốc hội, Hội đồng nhân dân là bao nhiêu?",
+        options: [
+          "Đủ 18 tuổi trở lên có quyền bầu cử và đủ 20 tuổi trở lên có quyền ứng cử",
+          "Đủ 18 tuổi trở lên có quyền bầu cử và đủ 21 tuổi trở lên có quyền ứng cử",
+          "Đủ 16 tuổi trở lên có quyền bầu cử và đủ 18 tuổi trở lên có quyền ứng cử",
+          "Đủ 20 tuổi trở lên có quyền bầu cử và đủ 25 tuổi trở lên có quyền ứng cử"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.2 • Trang 67",
+        explanation: "Theo <strong>Điều 27 Hiến pháp 2013</strong>: <em>\"Công dân <strong>đủ mười tám tuổi trở lên</strong> có quyền bầu cử và <strong>đủ hai mươi mốt tuổi trở lên</strong> có quyền ứng cử vào Quốc hội, Hội đồng nhân dân\"</em>. Lưu ý: Đây là <strong>quyền công dân</strong> (chỉ công dân Việt Nam mới có)."
+      },
+      {
+        uid: "ch3_21",
+        chapter: 3,
+        origNum: 21,
+        question: "Quyền được sống trong môi trường trong lành (Điều 43) và quyền sở hữu tư nhân, quyền thừa kế (Điều 32) thuộc nhóm quyền cơ bản nào?",
+        options: [
+          "Nhóm quyền cơ bản về dân sự",
+          "Nhóm quyền cơ bản về chính trị",
+          "Nhóm quyền cơ bản về kinh tế, xã hội, văn hóa",
+          "Nhóm quyền tố tụng tư pháp"
+        ],
+        correctIndex: 2,
+        ref: "Chương 3 • Mục 1.2.3.2 • Trang 67",
+        explanation: "<strong>Nhóm quyền cơ bản về kinh tế, xã hội, văn hóa</strong> bảo đảm chất lượng cuộc sống của con người, bao gồm: <strong>Quyền sở hữu tư nhân và quyền thừa kế (Điều 32)</strong>; quyền trẻ em, thanh niên, người cao tuổi (Điều 37); quyền hưởng thụ văn hóa (Điều 41); <strong>quyền được sống trong môi trường trong lành và nghĩa vụ bảo vệ môi trường (Điều 43)</strong>..."
+      },
+      {
+        uid: "ch3_22",
+        chapter: 3,
+        origNum: 22,
+        question: "Theo Điều 44 Hiến pháp 2013, hành vi nào bị xác định là tội nặng nhất đối với công dân?",
+        options: [
+          "Trốn thuế và gian lận thương mại",
+          "Phản bội Tổ quốc",
+          "Vi phạm trật tự an toàn công cộng",
+          "Không thực hiện nghĩa vụ bảo vệ môi trường"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.2 • Trang 68",
+        explanation: "<strong>Điều 44 Hiến pháp 2013</strong> quy định: <em>\"Công dân có nghĩa vụ trung thành với Tổ quốc. <strong>Phản bội Tổ quốc là tội nặng nhất</strong>.\"</em>"
+      },
+      {
+        uid: "ch3_23",
+        chapter: 3,
+        origNum: 23,
+        question: "Quyền và nghĩa vụ học tập của công dân được ghi nhận tại điều nào của Hiến pháp năm 2013?",
+        options: [
+          "Điều 35",
+          "Điều 39",
+          "Điều 43",
+          "Điều 47"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.2 • Trang 68",
+        explanation: "<strong>Điều 39 Hiến pháp 2013</strong> quy định ngắn gọn và súc tích: <em>\"Công dân có <strong>quyền và nghĩa vụ học tập</strong>.\"</em> (Học tập vừa là quyền, vừa là nghĩa vụ hiến định)."
+      },
+      {
+        uid: "ch3_24",
+        chapter: 3,
+        origNum: 24,
+        question: "Trong nền kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam với nhiều hình thức sở hữu và nhiều thành phần kinh tế, thành phần kinh tế nào giữ vai trò chủ đạo?",
+        options: [
+          "Kinh tế tư nhân",
+          "Kinh tế tập thể",
+          "Kinh tế nhà nước",
+          "Kinh tế có vốn đầu tư nước ngoài"
+        ],
+        correctIndex: 2,
+        ref: "Chương 3 • Mục 1.2.3.3 • Trang 69",
+        explanation: "Hiến pháp 2013 xác định nền kinh tế Việt Nam là nền kinh tế thị trường định hướng xã hội chủ nghĩa với nhiều hình thức sở hữu, nhiều thành phần kinh tế; trong đó <strong>kinh tế nhà nước giữ vai trò chủ đạo</strong>. Ngoài ra, lần đầu tiên vị trí, vai trò của <strong>doanh nhân, doanh nghiệp</strong> được ghi nhận trong Hiến pháp."
+      },
+      {
+        uid: "ch3_25",
+        chapter: 3,
+        origNum: 25,
+        question: "Theo Hiến pháp 2013, đất đai, tài nguyên nước, tài nguyên khoáng sản, nguồn lợi ở vùng biển, vùng trời thuộc hình thức sở hữu nào?",
+        options: [
+          "Sở hữu tư nhân của người sử dụng đất",
+          "Tài sản công thuộc sở hữu toàn dân do Nhà nước đại diện chủ sở hữu và thống nhất quản lý",
+          "Sở hữu hỗn hợp giữa Nhà nước và các tổ chức kinh tế",
+          "Sở hữu tập thể của cộng đồng dân cư địa phương"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.3 • Trang 69",
+        explanation: "Hiến pháp quy định <strong>đất đai, tài nguyên nước, tài nguyên khoáng sản, nguồn lợi ở vùng biển, vùng trời, tài nguyên thiên nhiên khác và các tài sản do Nhà nước đầu tư, quản lý là tài sản công thuộc sở hữu toàn dân do Nhà nước đại diện chủ sở hữu và thống nhất quản lý</strong>."
+      },
+      {
+        uid: "ch3_26",
+        chapter: 3,
+        origNum: 26,
+        question: "Theo Hiến pháp 2013, đường lối đối ngoại của nước Cộng hòa xã hội chủ nghĩa Việt Nam được xác định như thế nào?",
+        options: [
+          "Liên minh quân sự chặt chẽ với các nước lớn trong khu vực",
+          "Độc lập, tự chủ, hòa bình, hữu nghị, hợp tác và phát triển; đa phương hóa, đa dạng hóa quan hệ, chủ động và tích cực hội nhập, hợp tác quốc tế",
+          "Đóng cửa kinh tế để bảo vệ tuyệt đối sản xuất nội địa",
+          "Chỉ thiết lập quan hệ ngoại giao với các nước có cùng chế độ chính trị"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.3 • Trang 68",
+        explanation: "Theo <strong>Điều 12 Hiến pháp 2013</strong>, đường lối đối ngoại của Việt Nam là <strong>độc lập, tự chủ, hòa bình, hữu nghị, hợp tác và phát triển; đa phương hóa, đa dạng hóa quan hệ, chủ động và tích cực hội nhập, hợp tác quốc tế</strong> trên cơ sở tôn trọng độc lập, chủ quyền và toàn vẹn lãnh thổ, không can thiệp vào công việc nội bộ của nhau, bình đẳng, cùng có lợi."
+      },
+      {
+        uid: "ch3_27",
+        chapter: 3,
+        origNum: 27,
+        question: "Nội dung về \"Bảo vệ Tổ quốc\" được quy định tại chương nào của Hiến pháp năm 2013 và lực lượng nào giữ vai trò nòng cốt?",
+        options: [
+          "Chương III (gồm 14 điều); lực lượng Dân quân tự vệ làm nòng cốt",
+          "Chương IV (gồm 5 điều); Quân đội nhân dân và Công an nhân dân là lực lượng nòng cốt",
+          "Chương V (gồm 15 điều); chỉ có Quân đội nhân dân làm nòng cốt",
+          "Chương II (gồm 36 điều); toàn bộ các tổ chức chính trị - xã hội làm nòng cốt"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.3 • Trang 69",
+        explanation: "Bảo vệ Tổ quốc được quy định tại <strong>Chương IV Hiến pháp 2013 gồm 5 Điều</strong>, quy định trách nhiệm của toàn dân trong việc bảo vệ Tổ quốc, trong đó <strong>Quân đội nhân dân và Công an nhân dân là lực lượng nòng cốt</strong>."
+      },
+      {
+        uid: "ch3_28",
+        chapter: 3,
+        origNum: 28,
+        question: "Theo giáo trình, bộ máy nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam được định nghĩa là gì?",
+        options: [
+          "Tập hợp các tổ chức chính trị - xã hội và đoàn thể quần chúng từ trung ương đến địa phương",
+          "Cấu trúc tổ chức trực tiếp nắm giữ và thực thi quyền lực nhà nước, bao gồm tổng thể các cơ quan nhà nước từ trung ương tới địa phương",
+          "Hệ thống các đơn vị sự nghiệp công lập và doanh nghiệp nhà nước trên cả nước",
+          "Cơ quan lập pháp duy nhất thực hiện toàn bộ chức năng quản lý xã hội"
+        ],
+        correctIndex: 1,
+        ref: "Chương 3 • Mục 1.2.3.4 • Trang 70",
+        explanation: "Bộ máy nhà nước CHXHCN Việt Nam là <strong>\"cấu trúc tổ chức trực tiếp nắm giữ và thực thi quyền lực nhà nước\"</strong>, bao gồm <strong>tổng thể các cơ quan nhà nước từ trung ương tới địa phương</strong>, được tổ chức, hoạt động theo những nguyên tắc thống nhất, tạo thành cơ chế đồng bộ nhằm thực hiện nhiệm vụ, chức năng của Nhà nước."
+      },
+
+      // -------------------- CHƯƠNG 4: 25 CÂU --------------------
+      {
+        uid: "ch4_1",
+        chapter: 4,
+        origNum: 1,
+        question: "Đặc điểm nào sau đây phản ánh đúng bản chất và hình thức tồn tại của ngành Luật hành chính Việt Nam?",
+        options: [
+          "Chỉ được quy định tập trung trong một Bộ luật Hành chính thống nhất.",
+          "Điều chỉnh các quan hệ tài sản và nhân thân trên cơ sở bình đẳng thỏa thuận.",
+          "Hệ thống quy phạm được ghi nhận trong nhiều văn bản quy phạm pháp luật khác nhau.",
+          "Chỉ điều chỉnh quan hệ giữa công dân với các tổ chức xã hội ngoài nhà nước."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.1.1 • Trang 74",
+        explanation: "Nguồn của Luật hành chính Việt Nam phong phú, đa dạng, <strong>không được thể hiện trong một đạo luật duy nhất</strong> mà bao gồm hệ thống quy phạm ghi nhận trong <strong>nhiều đạo luật và văn bản QPPL khác nhau</strong> (về cán bộ, công chức, viên chức; xử lý vi phạm hành chính; tố tụng hành chính...)."
+      },
+      {
+        uid: "ch4_2",
+        chapter: 4,
+        origNum: 2,
+        question: "Quan hệ phối hợp giữa Ủy ban nhân dân cấp tỉnh với văn phòng đại diện của một Bộ đóng trên địa bàn địa phương có tính chất pháp lý như thế nào?",
+        options: [
+          "Quan hệ trực thuộc theo hệ thống ngành dọc từ trung ương xuống địa phương.",
+          "Quan hệ phối hợp công tác và không mang tính chất quan hệ cấp trên với cấp dưới.",
+          "Quan hệ hành chính nội bộ trong cùng một cơ quan hành chính nhà nước.",
+          "Quan hệ ủy quyền thực hiện nhiệm vụ quản lý chuyên môn đặc thù."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.1.2.1 (Nhóm 1) • Trang 76",
+        explanation: "Quan hệ phối hợp giữa cơ quan hành chính ở địa phương (VD: UBND cấp tỉnh) với các đơn vị/văn phòng đại diện của cơ quan trung ương đóng trên địa bàn <strong>không mang tính chất quan hệ cấp trên – cấp dưới</strong>."
+      },
+      {
+        uid: "ch4_3",
+        chapter: 4,
+        origNum: 3,
+        question: "Hoạt động nào sau đây thuộc nhóm đối tượng điều chỉnh thứ hai của Luật hành chính?",
+        options: [
+          "Cảnh sát giao thông xử phạt người điều khiển xe máy vượt đèn đỏ.",
+          "UBND cấp tỉnh giải quyết khiếu nại về thu hồi đất cho công dân.",
+          "Bộ trưởng ra quyết định bổ nhiệm, khen thưởng hoặc kỷ luật công chức thuộc Bộ.",
+          "Thuyền trưởng tạm giữ người gây rối trật tự khi tàu thủy đã rời cảng."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.1.2.1 (Nhóm 2) • Trang 76–77",
+        explanation: "Nhóm thứ hai là các quan hệ phát sinh trong <strong>hoạt động hành chính nội bộ</strong> của các cơ quan nhà nước (ví dụ: <strong>bổ nhiệm, khen thưởng, kỷ luật cán bộ, công chức; sáp nhập, thành lập đơn vị trực thuộc</strong>...)."
+      },
+      {
+        uid: "ch4_4",
+        chapter: 4,
+        origNum: 4,
+        question: "Khi thuyền trưởng thực hiện quyền tạm giữ người vi phạm trật tự trên tàu thủy đã rời cảng, hoạt động này chỉ làm phát sinh hậu quả pháp lý hành chính trong trường hợp nào?",
+        options: [
+          "Thuyền trưởng được cơ quan nhà nước bổ nhiệm vào ngạch công chức hành chính.",
+          "Hành vi được thực hiện trong phạm vi nhiệm vụ chấp hành – điều hành do luật định.",
+          "Có sự đồng ý bằng văn bản của người vi phạm và hành khách trên tàu.",
+          "Tàu thủy thuộc sở hữu hoàn toàn của doanh nghiệp nhà nước."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.1.2.1 (Nhóm 3) • Trang 77",
+        explanation: "Cá nhân, tổ chức không phải cơ quan nhà nước nhưng được Nhà nước trao quyền (như Thành đoàn TP.HCM, chỉ huy tàu bay, thuyền trưởng) chỉ làm phát sinh hậu quả pháp lý hành chính <strong>trong phạm vi thực hiện nhiệm vụ chấp hành – điều hành do pháp luật quy định</strong> (khác với hoạt động chuyên môn cơ bản của họ)."
+      },
+      {
+        uid: "ch4_5",
+        chapter: 4,
+        origNum: 5,
+        question: "Phương pháp mệnh lệnh hành chính trong điều chỉnh các quan hệ quản lý nhà nước được thể hiện qua đặc trưng cơ bản nào?",
+        options: [
+          "Các bên tự do thỏa thuận quyền và nghĩa vụ trên cơ sở bình đẳng về địa vị pháp lý.",
+          "Quyết định quản lý chỉ có hiệu lực khi được đối tượng quản lý ký xác nhận đồng ý.",
+          "Sự không bình đẳng về ý chí với mệnh lệnh đơn phương có hiệu lực bắt buộc.",
+          "Mọi tranh chấp phát sinh đều phải giải quyết thông qua hòa giải thương mại."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.1.2.2 • Trang 78",
+        explanation: "Luật hành chính sử dụng <strong>phương pháp mệnh lệnh hành chính (mệnh lệnh bắt buộc)</strong>: một bên nhân danh Nhà nước áp đặt ý chí, thể hiện <strong>sự không bình đẳng về ý chí</strong>; mệnh lệnh đơn phương có hiệu lực bắt buộc thi hành và được bảo đảm bằng cưỡng chế nhà nước."
+      },
+      {
+        uid: "ch4_6",
+        chapter: 4,
+        origNum: 6,
+        question: "Theo giáo trình, tranh chấp phát sinh trong quan hệ pháp luật hành chính chủ yếu được giải quyết thông qua cơ chế nào?",
+        options: [
+          "Thương lượng dân sự giữa cơ quan nhà nước và người dân.",
+          "Thủ tục hành chính thông qua việc khiếu nại hoặc khởi kiện vụ án hành chính tại Tòa án.",
+          "Trọng tài thương mại độc lập theo lựa chọn của các bên.",
+          "Xét xử theo thủ tục tố tụng hình sự sơ thẩm."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.1.1 (Đặc điểm thứ tư) • Trang 79",
+        explanation: "Tranh chấp hành chính chủ yếu giải quyết theo <strong>thủ tục hành chính</strong>; khi không đồng thuận, đối tượng quản lý có quyền <strong>khiếu nại</strong> (yêu cầu chủ thể quản lý xem xét lại) hoặc <strong>khởi kiện vụ án hành chính tại Tòa án</strong>."
+      },
+      {
+        uid: "ch4_7",
+        chapter: 4,
+        origNum: 7,
+        question: "Nhận định nào sau đây đúng về cấu trúc của quan hệ pháp luật hành chính?",
+        options: [
+          "Chủ thể quản lý chỉ có quyền ra mệnh lệnh mà không có nghĩa vụ pháp lý nào.",
+          "Năng lực hành vi hành chính của cá nhân xuất hiện đồng thời ngay từ khi cá nhân sinh ra.",
+          "Quyền của chủ thể quản lý hành chính nhà nước đồng thời cũng là nghĩa vụ pháp lý của họ.",
+          "Khách thể của quan hệ pháp luật hành chính chỉ là tài sản vật chất của cơ quan nhà nước."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.2.1.2 • Trang 80–81",
+        explanation: "Đối với các chủ thể quản lý hành chính nhà nước (cơ quan nhà nước, cá nhân/tổ chức được trao quyền), <strong>quyền đồng thời cũng là nghĩa vụ pháp lý</strong> của các chủ thể này (không được từ bỏ việc thực thi thẩm quyền). Năng lực pháp luật hành chính có từ khi sinh ra, còn năng lực hành vi phụ thuộc độ tuổi và khả năng nhận thức."
+      },
+      {
+        uid: "ch4_8",
+        chapter: 4,
+        origNum: 8,
+        question: "Căn cứ vào thẩm quyền và nguyên tắc tổ chức giải quyết công việc, các Bộ và cơ quan ngang bộ thuộc nhóm cơ quan nào?",
+        options: [
+          "Cơ quan thẩm quyền chung và hoạt động theo chế độ tập thể lãnh đạo.",
+          "Cơ quan thẩm quyền chuyên môn và hoạt động theo chế độ thủ trưởng.",
+          "Cơ quan thẩm quyền chung và hoạt động theo chế độ thủ trưởng.",
+          "Cơ quan thẩm quyền chuyên môn và hoạt động theo chế độ tập thể lãnh đạo."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.2 • Trang 82–83",
+        explanation: "<strong>Bộ và cơ quan ngang bộ</strong> quản lý sâu theo từng ngành/lĩnh vực trên phạm vi cả nước nên là <strong>cơ quan thẩm quyền chuyên môn</strong> và vận hành theo <strong>chế độ thủ trưởng</strong> (một người đứng đầu lãnh đạo, quyết định và chịu trách nhiệm). Ngược lại, Chính phủ và UBND là cơ quan thẩm quyền chung, chế độ tập thể lãnh đạo."
+      },
+      {
+        uid: "ch4_9",
+        chapter: 4,
+        origNum: 9,
+        question: "Theo Hiến pháp 2013 (sửa đổi, bổ sung năm 2025) được trình bày trong giáo trình, xác định nào sau đây đúng về hệ thống cơ quan hành chính nhà nước?",
+        options: [
+          "Chính phủ gồm 18 bộ, 4 cơ quan ngang bộ và UBND được tổ chức theo ba cấp.",
+          "Chính phủ gồm 14 bộ, 3 cơ quan ngang bộ và hệ thống UBND có hai cấp là tỉnh và xã.",
+          "Các Sở thuộc UBND cấp tỉnh là cơ quan hành chính nhà nước có thẩm quyền chung.",
+          "Các Phòng thuộc UBND cấp xã là cơ quan hành chính nhà nước độc lập ở cơ sở."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.2 • Trang 82–83",
+        explanation: "Theo <strong>Hiến pháp 2013 (sửa đổi, bổ sung năm 2025)</strong>, Chính phủ gồm <strong>14 bộ và 3 cơ quan ngang bộ</strong>; UBND ở địa phương gồm hai cấp (<strong>cấp tỉnh và cấp xã</strong>). Lưu ý: <strong>Sở (thuộc UBND cấp tỉnh) và Phòng (thuộc UBND cấp xã) không phải là cơ quan hành chính nhà nước</strong> mà là cơ quan tham mưu, giúp UBND thực hiện quản lý hành chính."
+      },
+      {
+        uid: "ch4_10",
+        chapter: 4,
+        origNum: 10,
+        question: "Điểm khác biệt cơ bản để phân biệt cán bộ với công chức theo quy định pháp luật hiện hành là gì?",
+        options: [
+          "Cán bộ hưởng lương từ ngân sách nhà nước còn công chức hưởng lương từ doanh nghiệp.",
+          "Cán bộ giữ chức vụ theo nhiệm kỳ qua bầu cử còn công chức được tuyển dụng vào vị trí việc làm.",
+          "Cán bộ làm việc tại cơ quan trung ương còn công chức chỉ làm việc ở địa phương.",
+          "Cán bộ không phải là công dân Việt Nam còn công chức bắt buộc là công dân Việt Nam."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.3 • Trang 83",
+        explanation: "<strong>Cán bộ</strong> là công dân Việt Nam, được <strong>bầu cử, phê chuẩn, bổ nhiệm hoặc chỉ định giữ chức vụ, chức danh theo nhiệm kỳ</strong>; còn <strong>Công chức</strong> là công dân Việt Nam, được <strong>tuyển dụng vào vị trí việc làm</strong>, trong biên chế và hưởng lương từ ngân sách nhà nước."
+      },
+      {
+        uid: "ch4_11",
+        chapter: 4,
+        origNum: 11,
+        question: "Một người từ đủ 14 tuổi đến dưới 16 tuổi thực hiện hành vi trái pháp luật hành chính với lỗi vô ý thì bị xử lý như thế nào?",
+        options: [
+          "Bị xử phạt cảnh cáo bằng văn bản.",
+          "Bị phạt tiền bằng một nửa mức phạt của người thành niên.",
+          "Không bị xem là chủ thể vi phạm hành chính để xử lý.",
+          "Bị áp dụng biện pháp đưa vào trường giáo dưỡng."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.2.4.1 (Mục 3 - Chủ thể) • Trang 85",
+        explanation: "Người từ đủ 16 tuổi trở lên chịu trách nhiệm về mọi vi phạm; trong khi đó, <strong>người từ đủ 14 đến dưới 16 tuổi chỉ bị coi là chủ thể vi phạm khi thực hiện hành vi với lỗi cố ý (không xử lý đối với lỗi vô ý)</strong>."
+      },
+      {
+        uid: "ch4_12",
+        chapter: 4,
+        origNum: 12,
+        question: "Theo nội dung giáo trình, một tổ chức muốn trở thành chủ thể thực hiện hành vi vi phạm hành chính phải đáp ứng điều kiện pháp lý nào?",
+        options: [
+          "Phải là cơ quan hành chính nhà nước ở trung ương.",
+          "Phải được thành lập hợp pháp và có tư cách pháp nhân độc lập.",
+          "Phải có vốn điều lệ thuộc sở hữu hoàn toàn của Nhà nước.",
+          "Phải có trụ sở chính đặt tại lãnh thổ Việt Nam trên 5 năm."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.4.1 (Mục 3 - Chủ thể) • Trang 85–86",
+        explanation: "Đối với tổ chức (cơ quan nhà nước, đơn vị kinh tế, tổ chức xã hội, lực lượng vũ trang...), <strong>các tổ chức này phải được thành lập hợp pháp và có tư cách pháp nhân</strong> để có thể chịu trách nhiệm độc lập trước pháp luật hành chính."
+      },
+      {
+        uid: "ch4_13",
+        chapter: 4,
+        origNum: 13,
+        question: "Theo nguyên tắc xử phạt vi phạm hành chính, trách nhiệm chứng minh hành vi vi phạm hành chính thuộc về chủ thể nào?",
+        options: [
+          "Cá nhân hoặc tổ chức bị nghi ngờ thực hiện hành vi vi phạm.",
+          "Người có thẩm quyền xử phạt vi phạm hành chính.",
+          "Tòa án nhân dân nơi phát sinh hành vi vi phạm.",
+          "Tổ chức xã hội bảo vệ quyền lợi người tiêu dùng."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.4.2 • Trang 86",
+        explanation: "Nguyên tắc xử phạt VPHC: <strong>trách nhiệm chứng minh vi phạm thuộc về người có thẩm quyền</strong>, trong khi cá nhân, tổ chức có quyền tự chứng minh mình không vi phạm để bảo vệ quyền lợi hợp pháp."
+      },
+      {
+        uid: "ch4_14",
+        chapter: 4,
+        origNum: 14,
+        question: "Trong các hình thức xử phạt vi phạm hành chính sau đây, cặp hình thức nào chỉ được áp dụng là hình thức xử phạt chính mà không bao giờ là hình thức xử phạt bổ sung?",
+        options: [
+          "Tước quyền sử dụng giấy phép và đình chỉ hoạt động có thời hạn.",
+          "Tịch thu tang vật vi phạm và trục xuất.",
+          "Cảnh cáo và phạt tiền.",
+          "Phạt tiền và tịch thu phương tiện vi phạm."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.2.4.2 (Mục i) • Trang 87–88",
+        explanation: "Trong 5 hình thức xử phạt VPHC (cảnh cáo; phạt tiền; tước quyền sử dụng giấy phép/chứng chỉ hành nghề có thời hạn hoặc đình chỉ hoạt động có thời hạn; tịch thu tang vật, phương tiện; trục xuất), <strong>cảnh cáo và phạt tiền luôn là hình thức xử phạt chính</strong>, không bao giờ là hình thức xử phạt bổ sung (3 hình thức còn lại có thể là chính hoặc bổ sung)."
+      },
+      {
+        uid: "ch4_15",
+        chapter: 4,
+        origNum: 15,
+        question: "Người từ đủ 16 tuổi đến dưới 18 tuổi vi phạm hành chính nếu bị áp dụng hình thức phạt tiền thì mức phạt được xác định như thế nào?",
+        options: [
+          "Bằng mức phạt tiền áp dụng đối với người thành niên.",
+          "Không quá một phần hai mức phạt tiền áp dụng đối với người thành niên.",
+          "Không bị áp dụng hình thức phạt tiền trong mọi trường hợp.",
+          "Không quá một phần ba mức phạt tiền áp dụng đối với người thành niên."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.4.2 (Mục 2 - Phạt tiền) • Trang 88",
+        explanation: "Theo Điều 134 Luật XLVPHC: Người từ đủ 14 đến dưới 16 tuổi không bị phạt tiền; <strong>người từ đủ 16 tuổi đến dưới 18 tuổi</strong> vi phạm hành chính nếu bị phạt tiền thì chịu mức phạt <strong>không quá 1/2 mức phạt đối với người thành niên</strong> (nếu không có tiền nộp phạt thì cha mẹ hoặc người giám hộ phải nộp phạt thay)."
+      },
+      {
+        uid: "ch4_16",
+        chapter: 4,
+        origNum: 16,
+        question: "Nhận định nào sau đây phân biệt đúng biện pháp xử lý hành chính với xử phạt vi phạm hành chính?",
+        options: [
+          "Biện pháp xử lý hành chính chỉ áp dụng đối với người nước ngoài vi phạm tại Việt Nam.",
+          "Biện pháp xử lý hành chính áp dụng cho cá nhân vi phạm trật tự chưa đến mức truy cứu hình sự.",
+          "Biện pháp xử lý hành chính có thể áp dụng cho cả tổ chức và cá nhân vi phạm.",
+          "Biện pháp xử lý hành chính luôn được áp dụng kèm theo hình thức phạt tiền."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.4.2 (Các biện pháp xử lý hành chính) • Trang 89",
+        explanation: "<strong>Biện pháp xử lý hành chính</strong> chỉ được áp dụng đối với <strong>cá nhân</strong> vi phạm pháp luật về an ninh, trật tự, an toàn xã hội nhưng <strong>chưa đến mức truy cứu trách nhiệm hình sự</strong> (không phải là hình thức xử phạt vi phạm hành chính, không áp dụng cho tổ chức)."
+      },
+      {
+        uid: "ch4_17",
+        chapter: 4,
+        origNum: 17,
+        question: "Sự khác biệt cơ bản giữa quyền khiếu nại và quyền tố cáo trong pháp luật hành chính nằm ở yếu tố nào?",
+        options: [
+          "Khiếu nại do công dân thực hiện còn tố cáo chỉ do cán bộ, công chức thực hiện.",
+          "Người khiếu nại phải có quyền lợi bị xâm phạm trực tiếp còn người tố cáo là bất kỳ cá nhân nào.",
+          "Khiếu nại chỉ nhắm vào hành vi tham nhũng còn tố cáo nhắm vào quyết định xử phạt hành chính.",
+          "Người tố cáo có quyền rút đơn bất cứ lúc nào để chấm dứt hoàn toàn việc giải quyết."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.2.5.1 • Trang 91",
+        explanation: "<strong>Khiếu nại</strong> là việc đề nghị xem xét lại QĐHC, HVHC hoặc QĐ kỷ luật CBCC khi có căn cứ cho rằng đối tượng này trái pháp luật hoặc <strong>xâm phạm quyền, lợi ích hợp pháp của chính mình</strong>. Còn <strong>tố cáo</strong> là việc <strong>cá nhân</strong> (bất kỳ ai) báo cho cơ quan có thẩm quyền biết về <strong>hành vi vi phạm pháp luật của bất kỳ cơ quan, tổ chức, cá nhân nào</strong> gây thiệt hại hoặc đe dọa gây thiệt hại đến lợi ích Nhà nước, quyền lợi của cơ quan, tổ chức, cá nhân."
+      },
+      {
+        uid: "ch4_18",
+        chapter: 4,
+        origNum: 18,
+        question: "Theo Luật Phòng, chống tham nhũng được nêu trong giáo trình, hành vi nào sau đây thuộc nhóm hành vi tham nhũng trong khu vực ngoài nhà nước?",
+        options: [
+          "Nhũng nhiễu vì vụ lợi trong giải quyết thủ tục hành chính.",
+          "Giả mạo trong công tác vì vụ lợi để cấp bằng cấp giả.",
+          "Tham ô tài sản, nhận hối lộ, đưa hối lộ hoặc môi giới hối lộ vì vụ lợi.",
+          "Lợi dụng chức vụ, quyền hạn sử dụng trái phép tài sản công."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.2.5.2 • Trang 93",
+        explanation: "Theo Luật Phòng, chống tham nhũng, các hành vi tham nhũng trong <strong>khu vực ngoài nhà nước</strong> bao gồm 4 hành vi: <strong>tham ô tài sản; nhận hối lộ; đưa hối lộ, môi giới hối lộ để giải quyết công việc của doanh nghiệp, tổ chức mình vì vụ lợi</strong>."
+      },
+      {
+        uid: "ch4_19",
+        chapter: 4,
+        origNum: 19,
+        question: "Trong Luật Tố tụng hành chính, quan hệ giữa các đương sự và những người tham gia tố tụng khác với nhau được điều chỉnh bằng phương pháp nào?",
+        options: [
+          "Phương pháp mệnh lệnh – quyền uy.",
+          "Phương pháp bình đẳng.",
+          "Phương pháp cưỡng chế hành chính.",
+          "Phương pháp thỏa thuận dân sự tuyệt đối."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.3.2 • Trang 94",
+        explanation: "Phương pháp điều chỉnh của Luật tố tụng hành chính gồm 2 phương pháp: (i) <strong>phương pháp mệnh lệnh – quyền uy</strong> (giữa cơ quan/người tiến hành tố tụng với đương sự, người tham gia tố tụng khác); và (ii) <strong>phương pháp bình đẳng</strong> (điều chỉnh quan hệ <strong>giữa các đương sự, những người tham gia tố tụng khác với nhau</strong>)."
+      },
+      {
+        uid: "ch4_20",
+        chapter: 4,
+        origNum: 20,
+        question: "Loại đối tượng nào sau đây KHÔNG phải là đối tượng tranh chấp trực tiếp trong một vụ án hành chính?",
+        options: [
+          "Quyết định giải quyết khiếu nại trong quản lý nhà nước.",
+          "Danh sách cử tri của cơ quan nhà nước.",
+          "Quyền tài sản và quyền nhân thân của cá nhân.",
+          "Quyết định xử lý vụ việc cạnh tranh."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.4.1 • Trang 94",
+        explanation: "Đối tượng tranh chấp trực tiếp trong vụ án hành chính là QĐHC, HVHC, QĐ giải quyết khiếu nại, QĐ kỷ luật buộc thôi việc, QĐ xử lý vụ việc cạnh tranh, danh sách cử tri. Giáo trình nhấn mạnh: <strong>\"Cần lưu ý rằng quyền tài sản và quyền nhân thân không phải là đối tượng tranh chấp trực tiếp trong vụ án hành chính.\"</strong>"
+      },
+      {
+        uid: "ch4_21",
+        chapter: 4,
+        origNum: 21,
+        question: "Một văn bản hành chính của cơ quan nhà nước chỉ trở thành đối tượng bị khởi kiện vụ án hành chính khi đáp ứng điều kiện nào?",
+        options: [
+          "Phải có tên gọi chính thức là \"Quyết định\" và có hiệu lực trên phạm vi cả nước.",
+          "Là văn bản cá biệt làm phát sinh, thay đổi hoặc chấm dứt quyền và nghĩa vụ.",
+          "Là văn bản quy phạm pháp luật do Chính phủ hoặc Bộ trưởng ban hành.",
+          "Là văn bản chỉ đạo điều hành nội bộ trong cùng một cơ quan hành chính."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.4.1 • Trang 94",
+        explanation: "Quyết định hành chính bị kiện là <strong>loại văn bản cá biệt</strong>, không nhất thiết phải có tên gọi là \"quyết định\", nhưng <strong>phải có nội dung làm phát sinh, thay đổi hoặc chấm dứt quyền và nghĩa vụ</strong> của cá nhân, tổ chức thì mới trở thành đối tượng bị khởi kiện."
+      },
+      {
+        uid: "ch4_22",
+        chapter: 4,
+        origNum: 22,
+        question: "Theo quy định về thẩm quyền xét xử theo loại việc, Tòa án nhân dân có thẩm quyền giải quyết khiếu kiện đối với quyết định kỷ luật buộc thôi việc của đối tượng nào?",
+        options: [
+          "Mọi cán bộ, công chức và viên chức trong các đơn vị sự nghiệp công lập.",
+          "Công chức giữ chức vụ dưới Thứ trưởng hoặc tương đương.",
+          "Tất cả công chức từ cấp Bộ trưởng trở xuống.",
+          "Người lao động làm việc theo hợp đồng lao động tại cơ quan nhà nước."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.4.2 (Mục i) • Trang 95",
+        explanation: "Về loại việc, Tòa án có thẩm quyền giải quyết khiếu kiện đối với <strong>quyết định kỷ luật buộc thôi việc công chức giữ chức vụ dưới Thứ trưởng</strong> (và tương đương)."
+      },
+      {
+        uid: "ch4_23",
+        chapter: 4,
+        origNum: 23,
+        question: "Theo Luật Tố tụng hành chính 2015 (sửa đổi, bổ sung năm 2025) được trích dẫn trong giáo trình, thẩm quyền xét xử sơ thẩm vụ án hành chính thuộc về cấp Tòa án nào?",
+        options: [
+          "Tòa án nhân dân cấp huyện.",
+          "Tòa án nhân dân khu vực.",
+          "Tòa án nhân dân cấp tỉnh.",
+          "Tòa án nhân dân cấp cao."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.4.2 (Mục ii) • Trang 95",
+        explanation: "Theo <strong>Điều 31 LTTHC 2015 (sửa đổi 2025)</strong>, thẩm quyền giải quyết sơ thẩm vụ án hành chính thuộc về <strong>Tòa án nhân dân khu vực</strong> (xác định theo nơi cư trú/trụ sở người khởi kiện hoặc nơi phát sinh hành vi bị kiện). <strong>Tòa án nhân dân cấp tỉnh</strong> (Điều 32) thực hiện xét xử theo thủ tục phúc thẩm hoặc giám đốc thẩm và tái thẩm."
+      },
+      {
+        uid: "ch4_24",
+        chapter: 4,
+        origNum: 24,
+        question: "Tại phiên tòa sơ thẩm vụ án hành chính có khiếu kiện phức tạp hoặc liên quan đến UBND cấp tỉnh, Chủ tịch UBND cấp tỉnh, thành phần Hội đồng xét xử gồm bao nhiêu người?",
+        options: [
+          "01 Thẩm phán và 02 Hội thẩm nhân dân.",
+          "02 Thẩm phán và 03 Hội thẩm nhân dân.",
+          "03 Thẩm phán và 02 Hội thẩm nhân dân.",
+          "01 Thẩm phán và 03 Hội thẩm nhân dân."
+        ],
+        correctIndex: 1,
+        ref: "Chương 4 • Mục 1.4.3.1 • Trang 97",
+        explanation: "Thông thường Hội đồng xét xử sơ thẩm gồm 01 Thẩm phán và 02 Hội thẩm nhân dân; <strong>nhưng đối với các khiếu kiện phức tạp hoặc liên quan đến UBND cấp tỉnh hoặc Chủ tịch UBND cấp tỉnh, số lượng thành viên sẽ tăng lên 02 Thẩm phán và 03 Hội thẩm nhân dân</strong> (Điều 154 LTTHC)."
+      },
+      {
+        uid: "ch4_25",
+        chapter: 4,
+        origNum: 25,
+        question: "Thủ tục tái thẩm trong tố tụng hành chính được tiến hành để xét lại bản án, quyết định đã có hiệu lực pháp luật khi xuất hiện căn cứ nào?",
+        options: [
+          "Phát hiện có vi phạm pháp luật nghiêm trọng trong quá trình giải quyết vụ án.",
+          "Đương sự nộp đơn kháng cáo trong thời hạn luật định trước khi bản án có hiệu lực.",
+          "Phát hiện tình tiết mới làm thay đổi cơ bản nội dung bản án mà trước đó chưa biết.",
+          "Có kiến nghị của Ủy ban Pháp luật và Tư pháp của Quốc hội đối với Hội đồng Thẩm phán."
+        ],
+        correctIndex: 2,
+        ref: "Chương 4 • Mục 1.4.3.3 • Trang 98",
+        explanation: "<strong>Tái thẩm</strong> là xét lại bản án, quyết định của Tòa án đã có hiệu lực pháp luật nhưng bị kháng nghị <strong>vì có những tình tiết mới được phát hiện có thể làm thay đổi cơ bản nội dung của bản án, quyết định mà Tòa án, đương sự không biết được khi Tòa án ra bản án, quyết định đó</strong>. (Còn <em>Giám đốc thẩm</em> là do phát hiện có <em>vi phạm pháp luật nghiêm trọng</em>)."
+      }
+    ];
+
+    // =========================================================================
+    // THUẬT TOÁN XÁO TRỘN FISHER-YATES (FISHER-YATES SHUFFLE)
+    // =========================================================================
+    function fisherYatesShuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // =========================================================================
+    // QUẢN LÝ TRẠNG THÁI ỨNG DỤNG
+    // =========================================================================
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    const questionLookup = Object.fromEntries(MASTER_QUESTIONS.map((q) => [q.uid, q]));
+
+    let state = {
+      activeTab: 'ch3',          // 'ch3' | 'ch4' | 'mix'
+      shuffleOptions: true,      // Mặc định bật trộn cả thứ tự đáp án A, B, C, D
+      deck: [],                  // Danh sách câu hỏi đã xáo trộn cho Tab hiện tại: [{ uid, optionOrder: [0..3] }]
+      userAnswers: {},           // { [uid]: originalOptionIndex (0..3) }
+      expandedExplanations: {},  // { [uid]: boolean }
+      showAllExplanations: false,
+      filter: 'all',             // 'all' | 'unanswered' | 'wrong'
+      viewMode: 'all',           // 'all' | 'single'
+      currentSingleIndex: 0
+    };
+
+    // Tạo danh sách câu hỏi mới đã được xáo trộn bằng Fisher-Yates cho Tab chỉ định
+    function buildShuffledDeck(tabId) {
+      let pool = [];
+      if (tabId === 'ch3') {
+        pool = MASTER_QUESTIONS.filter((q) => q.chapter === 3);
+      } else if (tabId === 'ch4') {
+        pool = MASTER_QUESTIONS.filter((q) => q.chapter === 4);
+      } else {
+        pool = [...MASTER_QUESTIONS];
+      }
+
+      const shuffledPool = fisherYatesShuffle(pool);
+      return shuffledPool.map((q) => ({
+        uid: q.uid,
+        optionOrder: state.shuffleOptions ? fisherYatesShuffle([0, 1, 2, 3]) : [0, 1, 2, 3]
+      }));
+    }
+
+    // Hiển thị thông báo Toast nhỏ gọn khi xáo trộn câu hỏi
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      container.innerHTML = `
+        <div class="animate-toast px-4 py-2.5 rounded-full bg-slate-900/95 text-white text-xs sm:text-sm font-semibold shadow-xl border border-slate-700 flex items-center gap-2 whitespace-nowrap">
+          <span class="text-amber-400">🔀</span>
+          <span>${message}</span>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // CÁC HÀM ĐIỀU KHIỂN TƯƠNG TÁC
+    // =========================================================================
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      state.filter = 'all';
+      state.currentSingleIndex = 0;
+      state.deck = buildShuffledDeck(tabId);
+      renderApp();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function manualShuffleQuestions() {
+      state.deck = buildShuffledDeck(state.activeTab);
+      state.currentSingleIndex = 0;
+      renderApp();
+      showToast('Đã xáo trộn ngẫu nhiên thứ tự câu hỏi!');
+    }
+
+    function toggleShuffleOptions(isChecked) {
+      state.shuffleOptions = isChecked;
+      // Cập nhật thứ tự đáp án cho các câu chưa trả lời (giữ nguyên vị trí câu đã trả lời để không bị nhảy đáp án vừa chọn)
+      state.deck = state.deck.map((item) => {
+        if (state.userAnswers[item.uid] !== undefined) {
+          return item;
+        }
+        return {
+          uid: item.uid,
+          optionOrder: isChecked ? fisherYatesShuffle([0, 1, 2, 3]) : [0, 1, 2, 3]
+        };
+      });
+      renderApp();
+      showToast(isChecked ? 'Đã bật trộn thứ tự đáp án A, B, C, D' : 'Đã đặt đáp án theo thứ tự gốc A, B, C, D');
+    }
+
+    function selectOption(uid, originalOptIdx) {
+      // Khóa lựa chọn sau khi đã chọn 1 phương án
+      if (state.userAnswers[uid] !== undefined) return;
+
+      state.userAnswers[uid] = originalOptIdx;
+      // Tự động mở khung giải thích lý thuyết & số trang ngay bên dưới câu hỏi
+      state.expandedExplanations[uid] = true;
+      renderApp();
+    }
+
+    function toggleSingleExplanation(uid) {
+      state.expandedExplanations[uid] = !state.expandedExplanations[uid];
+      const allOpen = state.deck.every((item) => Boolean(state.expandedExplanations[item.uid]));
+      state.showAllExplanations = allOpen;
+      renderApp();
+    }
+
+    function toggleAllExplanations() {
+      state.showAllExplanations = !state.showAllExplanations;
+      state.deck.forEach((item) => {
+        state.expandedExplanations[item.uid] = state.showAllExplanations;
+      });
+      renderApp();
+    }
+
+    function resetSingleQuestion(uid) {
+      delete state.userAnswers[uid];
+      if (!state.showAllExplanations) {
+        state.expandedExplanations[uid] = false;
+      }
+      // Nếu đang bật trộn đáp án, xáo trộn lại 4 phương án của câu này khi chọn lại
+      if (state.shuffleOptions) {
+        const deckItem = state.deck.find((d) => d.uid === uid);
+        if (deckItem) {
+          deckItem.optionOrder = fisherYatesShuffle([0, 1, 2, 3]);
+        }
+      }
+      renderApp();
+    }
+
+    function setFilter(filterName) {
+      state.filter = filterName;
+      state.currentSingleIndex = 0;
+      renderApp();
+    }
+
+    function setViewMode(mode) {
+      state.viewMode = mode;
+      state.currentSingleIndex = 0;
+      renderApp();
+    }
+
+    function navigateSingle(step) {
+      const filtered = getFilteredDeck();
+      if (filtered.length === 0) return;
+      const nextIdx = state.currentSingleIndex + step;
+      if (nextIdx >= 0 && nextIdx < filtered.length) {
+        state.currentSingleIndex = nextIdx;
+        renderApp();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function jumpToSingle(idx) {
+      state.currentSingleIndex = idx;
+      renderApp();
+    }
+
+    // Hộp thoại xác nhận làm lại từ đầu (thay thế confirm())
+    function openResetModal() {
+      const modal = document.getElementById('reset-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeResetModal() {
+      const modal = document.getElementById('reset-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmResetQuiz() {
+      // Xóa đáp án và trạng thái giải thích của các câu trong Tab hiện tại
+      state.deck.forEach((item) => {
+        delete state.userAnswers[item.uid];
+        delete state.expandedExplanations[item.uid];
+      });
+      state.showAllExplanations = false;
+      state.filter = 'all';
+      state.currentSingleIndex = 0;
+      // Tự động xáo trộn lại thứ tự câu hỏi bằng Fisher-Yates
+      state.deck = buildShuffledDeck(state.activeTab);
+      closeResetModal();
+      renderApp();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('Đã làm lại từ đầu & đảo ngẫu nhiên câu hỏi!');
+    }
+
+    // Lấy danh sách câu hỏi trong deck hiện tại theo bộ lọc trạng thái
+    function getFilteredDeck() {
+      return state.deck
+        .map((item, displayPosition) => ({
+          ...item,
+          displayNumber: displayPosition + 1,
+          data: questionLookup[item.uid]
+        }))
+        .filter((entry) => {
+          const ans = state.userAnswers[entry.uid];
+          if (state.filter === 'unanswered') return ans === undefined;
+          if (state.filter === 'wrong') return ans !== undefined && ans !== entry.data.correctIndex;
+          return true;
+        });
+    }
+
+    // =========================================================================
+    // CẬP NHẬT GIAO DIỆN (RENDER UI)
+    // =========================================================================
+    function updateHeaderAndControls() {
+      const total = state.deck.length;
+      let answeredCount = 0;
+      let correctCount = 0;
+      let wrongCount = 0;
+
+      state.deck.forEach((item) => {
+        const q = questionLookup[item.uid];
+        const ans = state.userAnswers[item.uid];
+        if (ans !== undefined) {
+          answeredCount++;
+          if (ans === q.correctIndex) correctCount++;
+          else wrongCount++;
+        }
+      });
+
+      const unansweredCount = total - answeredCount;
+      const progressPercent = total > 0 ? Math.round((answeredCount / total) * 100) : 0;
+
+      document.getElementById('stat-answered').textContent = `${answeredCount}/${total}`;
+      document.getElementById('stat-correct').textContent = correctCount;
+      document.getElementById('stat-wrong').textContent = wrongCount;
+      document.getElementById('stat-progress').textContent = `${progressPercent}%`;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+      document.getElementById('count-all').textContent = total;
+      document.getElementById('count-unanswered').textContent = unansweredCount;
+      document.getElementById('count-wrong').textContent = wrongCount;
+
+      // Phụ đề trang sách theo Tab
+      const subtitleEl = document.getElementById('header-subtitle');
+      if (state.activeTab === 'ch3') {
+        subtitleEl.textContent = 'Chương 3: Hiến pháp năm 2013 • Giáo trình Trang 58 – 70';
+      } else if (state.activeTab === 'ch4') {
+        subtitleEl.textContent = 'Chương 4: Luật Hành chính & TTHC • Giáo trình Trang 74 – 98';
+      } else {
+        subtitleEl.textContent = 'Thi thử tổng hợp Chương 3 & Chương 4 • Giáo trình Trang 58 – 98';
+      }
+
+      // Cập nhật giao diện 3 Tab
+      ['ch3', 'ch4', 'mix'].forEach((t) => {
+        const tabBtn = document.getElementById(`tab-${t}`);
+        if (state.activeTab === t) {
+          tabBtn.className = 'px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight bg-white text-brand-950 shadow-sm';
+        } else {
+          tabBtn.className = 'px-2 py-2 rounded-lg text-xs sm:text-[13px] font-bold transition-all text-center leading-tight text-blue-200 hover:text-white hover:bg-blue-800/50';
+        }
+      });
+
+      // Cập nhật nút Hiện tất cả giải thích / Ẩn giải thích
+      const toggleBtn = document.getElementById('btn-toggle-all-explain');
+      const toggleLabel = document.getElementById('label-toggle-all-explain');
+      if (state.showAllExplanations) {
+        toggleLabel.textContent = 'Ẩn giải thích';
+        toggleBtn.className = 'px-2.5 py-1.5 rounded-xl text-xs font-bold bg-white text-brand-950 hover:bg-blue-50 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs';
+      } else {
+        toggleLabel.textContent = 'Hiện tất cả giải thích';
+        toggleBtn.className = 'px-2.5 py-1.5 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs';
+      }
+
+      // Cập nhật 3 nút lọc trạng thái
+      ['all', 'unanswered', 'wrong'].forEach((f) => {
+        const fBtn = document.getElementById(`filter-${f}`);
+        if (state.filter === f) {
+          fBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-brand-950 shadow-xs whitespace-nowrap transition-colors';
+        } else {
+          fBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-900/70 text-blue-200 hover:bg-blue-800 border border-blue-800 whitespace-nowrap transition-colors';
+        }
+      });
+
+      // Cập nhật chế độ xem Danh sách / Từng câu
+      const btnAll = document.getElementById('btn-mode-all');
+      const btnSingle = document.getElementById('btn-mode-single');
+      if (state.viewMode === 'all') {
+        btnAll.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all bg-blue-600 text-white';
+        btnSingle.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all text-blue-200 hover:text-white';
+      } else {
+        btnSingle.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all bg-blue-600 text-white';
+        btnAll.className = 'px-2 py-1 rounded-md text-[11px] font-semibold transition-all text-blue-200 hover:text-white';
+      }
+    }
+
+    function createQuestionCardHTML(entry) {
+      const { uid, optionOrder, displayNumber, data: q } = entry;
+      const selectedOrigIdx = state.userAnswers[uid];
+      const isAnswered = selectedOrigIdx !== undefined;
+      const isCorrect = isAnswered && selectedOrigIdx === q.correctIndex;
+      const isExpanded = Boolean(state.expandedExplanations[uid]);
+
+      // Xác định chữ cái (A, B, C, D) đang hiển thị của đáp án đúng sau khi trộn
+      const correctDisplayIdx = optionOrder.indexOf(q.correctIndex);
+      const correctDisplayLetter = LETTERS[correctDisplayIdx];
+
+      // Huy hiệu trạng thái câu hỏi
+      let statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-600">Chưa làm</span>`;
+      if (isAnswered) {
+        if (isCorrect) {
+          statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">✓ Đúng</span>`;
+        } else {
+          statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800">✗ Sai</span>`;
+        }
+      }
+
+      // Tạo 4 nút đáp án A, B, C, D theo thứ tự optionOrder
+      const optionsHTML = optionOrder.map((origOptIdx, displayIdx) => {
+        const letter = LETTERS[displayIdx];
+        const optionText = q.options[origOptIdx];
+
+        let btnClass = 'w-full text-left p-3.5 sm:p-4 rounded-xl border-2 transition-all duration-150 flex items-start gap-3 group ';
+        let letterClass = 'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 transition-colors ';
+        let trailingIcon = '';
+
+        if (!isAnswered) {
+          btnClass += 'bg-white border-slate-200 hover:border-brand-600 hover:bg-blue-50/40 cursor-pointer active:scale-[0.995]';
+          letterClass += 'bg-slate-100 text-slate-700 group-hover:bg-brand-600 group-hover:text-white';
+        } else {
+          btnClass += 'cursor-default ';
+          if (origOptIdx === q.correctIndex) {
+            btnClass += 'bg-emerald-50/95 border-emerald-500 text-emerald-950 shadow-xs';
+            letterClass += 'bg-emerald-600 text-white';
+            trailingIcon = `<span class="ml-auto shrink-0 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-extrabold mt-0.5">✓</span>`;
+          } else if (origOptIdx === selectedOrigIdx && selectedOrigIdx !== q.correctIndex) {
+            btnClass += 'bg-rose-50/95 border-rose-500 text-rose-950';
+            letterClass += 'bg-rose-600 text-white';
+            trailingIcon = `<span class="ml-auto shrink-0 w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-extrabold mt-0.5">✗</span>`;
+          } else {
+            btnClass += 'bg-slate-50/80 border-slate-200/80 text-slate-500 opacity-75';
+            letterClass += 'bg-slate-200/80 text-slate-500';
+          }
+        }
+
+        return `
+          <button
+            type="button"
+            ${isAnswered ? 'disabled' : ''}
+            onclick="selectOption('${uid}', ${origOptIdx})"
+            class="${btnClass}"
+          >
+            <span class="${letterClass}">${letter}</span>
+            <span class="text-sm sm:text-[15px] leading-relaxed font-medium flex-1">${optionText}</span>
+            ${trailingIcon}
+          </button>
+        `;
+      }).join('');
+
+      // Khung Giải thích lý thuyết & Vị trí trong sách
+      const explanationHTML = isExpanded ? `
+        <div class="mt-4 rounded-xl bg-amber-50/95 border border-amber-200 border-l-4 border-l-amber-500 p-4 animate-explain">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-amber-950">
+              Giải thích lý thuyết &amp; Vị trí trong sách
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-brand-950 text-amber-300 shadow-xs">
+              📖 ${q.ref}
+            </span>
+          </div>
+          <p class="text-sm text-slate-800 leading-relaxed">
+            <strong class="text-emerald-800">Đáp án đúng (${correctDisplayLetter}):</strong> ${q.explanation}
+          </p>
+        </div>
+      ` : '';
+
+      // Nhãn đối chiếu câu gốc (ví dụ: Ch.3 • Câu gốc #14)
+      const origLabel = state.activeTab === 'mix'
+        ? `Ch.${q.chapter} • Câu gốc #${q.origNum}`
+        : `Câu gốc #${q.origNum}`;
+
+      return `
+        <article class="bg-white rounded-2xl p-4 sm:p-6 shadow-xs border border-slate-200/90 transition-shadow hover:shadow-md">
+          <!-- Header thẻ câu hỏi -->
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-extrabold bg-brand-900 text-white">
+                Câu ${displayNumber}
+              </span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-500 border border-slate-200/80">
+                ${origLabel}
+              </span>
+              ${statusBadge}
+            </div>
+
+            <div class="flex items-center gap-2">
+              ${isAnswered ? `
+                <button
+                  type="button"
+                  onclick="resetSingleQuestion('${uid}')"
+                  class="text-xs font-medium text-slate-400 hover:text-brand-700 underline underline-offset-2 px-1 py-1"
+                  title="Xóa đáp án câu này để chọn lại"
+                >
+                  Chọn lại
+                </button>
+              ` : ''}
+              <button
+                type="button"
+                onclick="toggleSingleExplanation('${uid}')"
+                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                  isExpanded
+                    ? 'bg-amber-100 text-amber-950 hover:bg-amber-200'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }"
+              >
+                <svg class="w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                ${isExpanded ? 'Ẩn giải thích' : 'Xem giải thích'}
+              </button>
+            </div>
+          </div>
+
+          <!-- Nội dung câu hỏi -->
+          <h2 class="text-base sm:text-[17px] font-bold text-slate-900 leading-relaxed mb-4">
+            ${q.question}
+          </h2>
+
+          <!-- Danh sách 4 đáp án A, B, C, D -->
+          <div class="space-y-2.5">
+            ${optionsHTML}
+          </div>
+
+          <!-- Khung giải thích lý thuyết & số trang -->
+          ${explanationHTML}
+        </article>
+      `;
+    }
+
+    function renderApp() {
+      updateHeaderAndControls();
+
+      const filtered = getFilteredDeck();
+      const container = document.getElementById('quiz-container');
+      const singleNav = document.getElementById('single-navigator');
+      const singleControls = document.getElementById('single-controls');
+
+      if (filtered.length === 0) {
+        singleNav.classList.add('hidden');
+        singleControls.classList.add('hidden');
+
+        const emptyTitle = state.filter === 'wrong'
+          ? 'Tuyệt vời! Bạn không có câu nào làm sai.'
+          : 'Bạn đã làm hết tất cả câu hỏi trong phần này!';
+        const emptyDesc = state.filter === 'wrong'
+          ? 'Hãy chuyển sang mục "Tất cả" để xem lại toàn bộ câu hỏi hoặc bấm "Đảo thứ tự câu hỏi" để luyện tập thêm.'
+          : 'Bạn có thể lọc "Câu làm sai" để ôn lại các câu bị nhầm hoặc bấm "Làm lại từ đầu".';
+
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl p-8 sm:p-10 text-center border border-slate-200 shadow-xs">
+            <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-3 text-xl font-extrabold">
+              ✓
+            </div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-1">${emptyTitle}</h3>
+            <p class="text-sm text-slate-500 max-w-md mx-auto mb-5">${emptyDesc}</p>
+            <button
+              type="button"
+              onclick="setFilter('all')"
+              class="px-4 py-2.5 rounded-xl bg-brand-900 text-white text-sm font-semibold hover:bg-brand-800 transition-colors"
+            >
+              Xem tất cả câu hỏi
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      if (state.viewMode === 'all') {
+        singleNav.classList.add('hidden');
+        singleControls.classList.add('hidden');
+        container.innerHTML = filtered.map(createQuestionCardHTML).join('');
+      } else {
+        if (state.currentSingleIndex >= filtered.length) {
+          state.currentSingleIndex = filtered.length - 1;
+        }
+        if (state.currentSingleIndex < 0) {
+          state.currentSingleIndex = 0;
+        }
+
+        singleNav.classList.remove('hidden');
+        singleControls.classList.remove('hidden');
+
+        const currentEntry = filtered[state.currentSingleIndex];
+        document.getElementById('single-counter-label').textContent = `Đang xem: Câu ${currentEntry.displayNumber} (${state.currentSingleIndex + 1}/${filtered.length})`;
+
+        document.getElementById('question-pills').innerHTML = filtered.map((entry, idx) => {
+          const ans = state.userAnswers[entry.uid];
+          const isCurrent = idx === state.currentSingleIndex;
+          let pillClass = 'w-8 h-8 rounded-lg text-xs font-bold transition-all flex items-center justify-center ';
+
+          if (ans === undefined) {
+            pillClass += 'bg-slate-100 text-slate-700 hover:bg-slate-200 ';
+          } else if (ans === entry.data.correctIndex) {
+            pillClass += 'bg-emerald-500 text-white ';
+          } else {
+            pillClass += 'bg-rose-500 text-white ';
+          }
+
+          if (isCurrent) {
+            pillClass += 'ring-2 ring-offset-2 ring-brand-900 scale-105';
+          }
+
+          return `<button type="button" onclick="jumpToSingle(${idx})" class="${pillClass}">${entry.displayNumber}</button>`;
+        }).join('');
+
+        container.innerHTML = createQuestionCardHTML(currentEntry);
+        document.getElementById('btn-prev').disabled = state.currentSingleIndex === 0;
+        document.getElementById('btn-next').disabled = state.currentSingleIndex === filtered.length - 1;
+      }
+    }
+
+    // Hỗ trợ phím mũi tên trái/phải khi xem ở chế độ Từng câu
+    document.addEventListener('keydown', (e) => {
+      if (state.viewMode !== 'single') return;
+      if (e.key === 'ArrowLeft') navigateSingle(-1);
+      else if (e.key === 'ArrowRight') navigateSingle(1);
+    });
+
+    // Tự động xáo trộn thứ tự câu hỏi & đáp án ngay khi tải trang
+    window.addEventListener('DOMContentLoaded', () => {
+      state.deck = buildShuffledDeck(state.activeTab);
+      renderApp();
+    });
+  </script>
+</body>
+</html>
